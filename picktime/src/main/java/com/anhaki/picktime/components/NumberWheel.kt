@@ -1,5 +1,6 @@
 package com.anhaki.picktime.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,94 +20,79 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
+import com.anhaki.picktime.utils.PickTimeTextStyle
+import com.anhaki.picktime.utils.measureTextHeights
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun NumberWheel(
+    modifier: Modifier = Modifier,
     items: List<Int>,
     selectedItem: Int,
     onItemSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    fontSize: Int = 36,
-    selectedFontSize: Int = 54,
-    padding: Int = 0,
+    space: Dp,
+    selectedTextStyle: PickTimeTextStyle,
+    unselectedTextStyle: PickTimeTextStyle,
+    extraRow: Int,
+    isLooping: Boolean,
 ) {
     val listState =
-        rememberLazyListState(nearestIndexTarget(Int.MAX_VALUE / 2, selectedItem, items.size))
+        if(isLooping){
+            rememberLazyListState(nearestIndexTarget(Int.MAX_VALUE / 2, (selectedItem - extraRow) + 1, items.size))
+        } else{
+            rememberLazyListState(initialFirstVisibleItemIndex = selectedItem)
+        }
 
     val coroutineScope = rememberCoroutineScope()
     val density = LocalDensity.current
 
-    val textHeight = fontSize * 1.5
-    val selectedTextHeight = selectedFontSize * 1.5
-    val maxOffset = with(density) { (textHeight + padding).dp.toPx() }
+    val (selectedTextLineHeightPx, unselectedTextLineHeightPx) = measureTextHeights(
+        selectedTextStyle = selectedTextStyle,
+        unselectedTextStyle = unselectedTextStyle
+    )
+
+    val selectedTextLineHeightDp = with(density){ selectedTextLineHeightPx.toDp() }
+    val unselectedTextLineHeightDp = with(density){ unselectedTextLineHeightPx.toDp() }
+
+    val wheelHeight = (unselectedTextLineHeightDp * (extraRow * 2)) + (space * (extraRow * 2 + 2)) + selectedTextLineHeightDp
+
+    val maxOffset = with(density) { unselectedTextLineHeightPx + space.toPx() }
 
     val firstIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
     val firstVisibleOffset by remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }
     val isScrolling by remember { derivedStateOf { listState.isScrollInProgress } }
     val progress = (firstVisibleOffset / maxOffset).coerceIn(0f, 1f)
 
-    val textColor = MaterialTheme.colorScheme.primaryContainer
-    val selectedColor = MaterialTheme.colorScheme.primary
-    val unselectedColor = MaterialTheme.colorScheme.primaryContainer
 
     val sizeInterpolator = { index: Int ->
         when (index) {
-            firstIndex -> lerp(selectedFontSize.toFloat(), fontSize.toFloat(), progress)
-            firstIndex + 1 -> lerp(fontSize.toFloat(), selectedFontSize.toFloat(), progress)
-            else -> fontSize.toFloat()
+            firstIndex -> transition(selectedTextStyle.fontSize.value, unselectedTextStyle.fontSize.value, progress)
+            firstIndex + 1 -> transition(unselectedTextStyle.fontSize.value, selectedTextStyle.fontSize.value, progress)
+            else -> unselectedTextStyle.fontSize.value
         }
     }
 
     val heightInterpolator = { index: Int ->
         when (index) {
-            firstIndex -> lerp(selectedTextHeight, textHeight, progress.toDouble())
-            firstIndex + 1 -> lerp(textHeight, selectedTextHeight, progress.toDouble())
-            else -> textHeight
+            firstIndex -> transition(selectedTextLineHeightPx, unselectedTextLineHeightPx, progress)
+            firstIndex + 1 -> transition(unselectedTextLineHeightPx, selectedTextLineHeightPx, progress)
+            else -> unselectedTextLineHeightPx
         }
     }
 
     val colorInterpolator = { index: Int ->
         when (index) {
-            firstIndex -> lerp(selectedColor, unselectedColor, progress)
-            firstIndex + 1 -> lerp(unselectedColor, selectedColor, progress)
-            else -> textColor
-        }
-    }
-
-    Box(
-        modifier = modifier
-            .height(((textHeight * 2) + (padding * 4) + selectedTextHeight).dp),
-        contentAlignment = Alignment.Center
-    ) {
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(padding.dp),
-            contentPadding = PaddingValues(vertical = padding.dp)
-        ) {
-            items(count = Int.MAX_VALUE, itemContent = {
-                val itemIndex = it % items.size
-                val item = items[itemIndex]
-                val countIndex = it % Int.MAX_VALUE
-
-                Text(
-                    modifier = Modifier.height(heightInterpolator(countIndex - 1).dp),
-                    text = item.toString().padStart(2, '0'),
-                    color = colorInterpolator(countIndex - 1),
-                    fontSize = sizeInterpolator(countIndex - 1).sp,
-                    fontWeight = if (selectedItem == items[itemIndex] - 1) FontWeight.Black else FontWeight.Bold
-                )
-            })
+            firstIndex -> transition(selectedTextStyle.color, unselectedTextStyle.color, progress)
+            firstIndex + 1 -> transition(unselectedTextStyle.color, selectedTextStyle.color, progress)
+            else -> unselectedTextStyle.color
         }
     }
 
     LaunchedEffect(firstVisibleOffset) {
-        onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) 2 else 1) % items.size])
+        onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow)  % items.size])
     }
 
     LaunchedEffect(isScrolling) {
@@ -117,17 +102,56 @@ fun NumberWheel(
             }
         }
     }
+
+    Box(
+        modifier = modifier
+            .height(wheelHeight),
+        contentAlignment = Alignment.Center
+    ) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(space),
+            contentPadding = PaddingValues(top = space, bottom = if(isLooping) space else (space * 2) + unselectedTextLineHeightDp)
+        ) {
+            if(!isLooping) {
+                item {
+                    Text(
+                        modifier = Modifier.height(unselectedTextLineHeightDp),
+                        text = " ",
+                        color = Color.Transparent,
+                        fontSize = unselectedTextStyle.fontSize,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = unselectedTextStyle.fontFamily
+                    )
+                }
+            }
+
+            items(count = if(isLooping) Int.MAX_VALUE else items.size, itemContent = {
+                val itemIndex = it % items.size
+                val item = items[itemIndex]
+                val countIndex = if(isLooping) it % Int.MAX_VALUE else it % items.size
+
+                Text(
+                    modifier = Modifier
+                        .height(with(density){ heightInterpolator(countIndex - extraRow).toDp() }),
+                    text = item.toString().padStart(2, '0'),
+                    color = colorInterpolator(countIndex - extraRow),
+                    fontSize = sizeInterpolator(countIndex - extraRow).sp,
+                    fontWeight = if (selectedItem == items[itemIndex] - 1) selectedTextStyle.fontWeight else unselectedTextStyle.fontWeight,
+                    fontFamily = if (selectedItem == items[itemIndex] - 1) selectedTextStyle.fontFamily else unselectedTextStyle.fontFamily
+                )
+            })
+        }
+    }
 }
 
-fun lerp(start: Float, end: Float, fraction: Float): Float {
+fun transition(start: Float, end: Float, fraction: Float): Float {
     return start + (end - start) * fraction
 }
 
-fun lerp(start: Double, end: Double, fraction: Double): Double {
-    return start + (end - start) * fraction
-}
-
-fun lerp(start: Color, end: Color, fraction: Float): Color {
+fun transition(start: Color, end: Color, fraction: Float): Color {
     return Color(
         (start.red + (end.red - start.red) * fraction),
         (start.green + (end.green - start.green) * fraction),
