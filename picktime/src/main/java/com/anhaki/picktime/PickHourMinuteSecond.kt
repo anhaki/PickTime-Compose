@@ -31,11 +31,13 @@ import com.anhaki.picktime.utils.PickTimeFocusIndicator
 import com.anhaki.picktime.utils.PickTimeTextStyle
 
 @Composable
-fun PickHourMinute(
+fun PickHourMinuteSecond(
     initialHour: Int,
     onHourChange: (Int) -> Unit,
     initialMinute: Int,
     onMinuteChange: (Int) -> Unit,
+    initialSecond: Int,
+    onSecondChange: (Int) -> Unit,
     selectedTextStyle: PickTimeTextStyle = PickTimeTextStyle(
         color = Color(0xFF404040),
         fontSize = 40.sp,
@@ -65,6 +67,7 @@ fun PickHourMinute(
 
     val hour = initialHour.coerceIn(0, 23)
     val minute = initialMinute.coerceIn(0, 59)
+    val second = initialSecond.coerceIn(0, 59)
     val row = extraRow.coerceIn(1, 5)
 
     val adjustedSelectedTextStyle = if (selectedTextStyle.fontSize < unselectedTextStyle.fontSize) {
@@ -115,6 +118,22 @@ fun PickHourMinute(
                 items = (0..59).toList(),
                 selectedItem = minute - 1,
                 onItemSelected = { onMinuteChange(it) },
+                space = verticalSpace,
+                selectedTextStyle = adjustedSelectedTextStyle,
+                unselectedTextStyle = unselectedTextStyle,
+                extraRow = row,
+                isLooping = isLooping,
+                overlayColor = containerColor,
+            )
+            Text(
+                text = ":",
+                style = adjustedSelectedTextStyle.toTextStyle()
+            )
+            Spacer(modifier = Modifier.width(horizontalSpace))
+            NumberWheel(
+                items = (0..59).toList(),
+                selectedItem = second - 1,
+                onItemSelected = { onSecondChange(it) },
                 space = verticalSpace,
                 selectedTextStyle = adjustedSelectedTextStyle,
                 unselectedTextStyle = unselectedTextStyle,

@@ -25,8 +25,8 @@ internal fun GradientOverlay(
                 .align(Alignment.BottomCenter)
                 .background(
                     Brush.verticalGradient(
-                        0F to Color.Transparent,
-                        .8F to color,
+                        .5F to Color.Transparent,
+                        .8F to color.copy(alpha = .8f),
                         1F to color
                     )
                 )
@@ -39,8 +39,8 @@ internal fun GradientOverlay(
                 .background(
                     Brush.verticalGradient(
                         0F to color,
-                        .2F to color,
-                        1F to Color.Transparent
+                        .2F to color.copy(alpha = .8f),
+                        .5F to Color.Transparent
                     )
                 )
                 .height(height)
