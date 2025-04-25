@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
@@ -17,18 +18,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anhaki.picktime.utils.PickTimeTextStyle
 import com.anhaki.picktime.utils.measureTextHeights
+import com.anhaki.picktime.utils.measureTextWidth
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun NumberWheel(
+internal fun NumberWheel(
     modifier: Modifier = Modifier,
     items: List<Int>,
     selectedItem: Int,
@@ -38,6 +44,7 @@ fun NumberWheel(
     unselectedTextStyle: PickTimeTextStyle,
     extraRow: Int,
     isLooping: Boolean,
+    overlayColor: Color
 ) {
     val listState =
         if(isLooping){
@@ -52,6 +59,10 @@ fun NumberWheel(
     val (selectedTextLineHeightPx, unselectedTextLineHeightPx) = measureTextHeights(
         selectedTextStyle = selectedTextStyle,
         unselectedTextStyle = unselectedTextStyle
+    )
+
+    val selectedTextLineWidthPx = measureTextWidth(
+        selectedTextStyle = selectedTextStyle,
     )
 
     val selectedTextLineHeightDp = with(density){ selectedTextLineHeightPx.toDp() }
@@ -109,12 +120,12 @@ fun NumberWheel(
 
     Box(
         modifier = modifier
-            .height(wheelHeight),
+            .height(wheelHeight)
+            .width(selectedTextLineWidthPx.dp),
         contentAlignment = Alignment.Center
     ) {
         LazyColumn(
             state = listState,
-            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(space),
             contentPadding = PaddingValues(top = space, bottom = if(isLooping) space else (space * (extraRow + 1)) + (unselectedTextLineHeightDp * extraRow))
@@ -153,14 +164,19 @@ fun NumberWheel(
                 )
             })
         }
+        GradientOverlay(
+            modifier = Modifier.height(wheelHeight).fillMaxWidth(),
+            color = overlayColor,
+            height = unselectedTextLineHeightDp + space
+        )
     }
 }
 
-fun transition(start: Float, end: Float, fraction: Float): Float {
+private fun transition(start: Float, end: Float, fraction: Float): Float {
     return start + (end - start) * fraction
 }
 
-fun transition(start: Color, end: Color, fraction: Float): Color {
+private fun transition(start: Color, end: Color, fraction: Float): Color {
     return Color(
         (start.red + (end.red - start.red) * fraction),
         (start.green + (end.green - start.green) * fraction),
@@ -169,7 +185,7 @@ fun transition(start: Color, end: Color, fraction: Float): Color {
     )
 }
 
-fun nearestIndexTarget(initialIndex: Int, target: Int, size: Int): Int {
+private fun nearestIndexTarget(initialIndex: Int, target: Int, size: Int): Int {
     val upperLimit = (initialIndex / size) * size + target
     val lowerLimit = upperLimit + size
     return if ((initialIndex - upperLimit) <= (lowerLimit - initialIndex)) {
