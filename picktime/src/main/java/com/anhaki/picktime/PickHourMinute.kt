@@ -55,10 +55,10 @@ fun PickHourMinute(
     extraRow: Int = 2,
     focusIndicator: PickTimeFocusIndicator = PickTimeFocusIndicator(
         enabled = true,
-        fullWidth = false,
+        widthFull = false,
         background = Color.LightGray,
         shape = RoundedCornerShape(12.dp),
-        border = BorderStroke(3.dp, Color.DarkGray),
+        border = BorderStroke(0.dp, Color.DarkGray),
     )
 ) {
     val hour = initialHour.coerceIn(0, 23)

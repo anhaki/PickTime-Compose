@@ -39,7 +39,7 @@ internal fun FocusIndicator(
 
         Box(
             modifier =
-            if(focusIndicator.fullWidth) {
+            if(focusIndicator.widthFull) {
                 modifier.fillMaxWidth()
             } else{
                 modifier.width(minWidth)
