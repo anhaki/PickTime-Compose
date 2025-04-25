@@ -38,7 +38,7 @@ fun PickHourMinute(
         fontFamily = FontFamily.Monospace,
         fontWeight = FontWeight.Normal,
     ),
-    extraRow: Int = 1,
+    extraRow: Int = 2,
     isLooping: Boolean = true,
 ) {
 

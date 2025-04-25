@@ -43,7 +43,7 @@ fun NumberWheel(
         if(isLooping){
             rememberLazyListState(nearestIndexTarget(Int.MAX_VALUE / 2, (selectedItem - extraRow) + 1, items.size))
         } else{
-            rememberLazyListState(initialFirstVisibleItemIndex = selectedItem)
+            rememberLazyListState(initialFirstVisibleItemIndex = selectedItem + 1)
         }
 
     val coroutineScope = rememberCoroutineScope()
@@ -92,7 +92,11 @@ fun NumberWheel(
     }
 
     LaunchedEffect(firstVisibleOffset) {
-        onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow)  % items.size])
+        if(isLooping){
+            onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow)  % items.size])
+        } else {
+            onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0)  % items.size])
+        }
     }
 
     LaunchedEffect(isScrolling) {
@@ -113,34 +117,39 @@ fun NumberWheel(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(space),
-            contentPadding = PaddingValues(top = space, bottom = if(isLooping) space else (space * 2) + unselectedTextLineHeightDp)
+            contentPadding = PaddingValues(top = space, bottom = if(isLooping) space else (space * (extraRow + 1)) + (unselectedTextLineHeightDp * extraRow))
         ) {
             if(!isLooping) {
-                item {
-                    Text(
-                        modifier = Modifier.height(unselectedTextLineHeightDp),
-                        text = " ",
-                        color = Color.Transparent,
-                        fontSize = unselectedTextStyle.fontSize,
-                        fontWeight = FontWeight.Normal,
-                        fontFamily = unselectedTextStyle.fontFamily
-                    )
+                for (x in (1..extraRow)){
+                    item {
+                        Text(
+                            modifier = Modifier.height(unselectedTextLineHeightDp),
+                            text = " ",
+                            color = Color.Transparent,
+                            fontSize = unselectedTextStyle.fontSize,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = unselectedTextStyle.fontFamily
+                        )
+                    }
                 }
             }
 
             items(count = if(isLooping) Int.MAX_VALUE else items.size, itemContent = {
                 val itemIndex = it % items.size
                 val item = items[itemIndex]
-                val countIndex = if(isLooping) it % Int.MAX_VALUE else it % items.size
+                val countIndex = it % Int.MAX_VALUE
+                val isItemSelected = selectedItem == items[itemIndex] - 1
+                val index = if(isLooping) countIndex - extraRow else itemIndex
+
 
                 Text(
                     modifier = Modifier
-                        .height(with(density){ heightInterpolator(countIndex - extraRow).toDp() }),
+                        .height(with(density){ heightInterpolator(index).toDp() }),
                     text = item.toString().padStart(2, '0'),
-                    color = colorInterpolator(countIndex - extraRow),
-                    fontSize = sizeInterpolator(countIndex - extraRow).sp,
-                    fontWeight = if (selectedItem == items[itemIndex] - 1) selectedTextStyle.fontWeight else unselectedTextStyle.fontWeight,
-                    fontFamily = if (selectedItem == items[itemIndex] - 1) selectedTextStyle.fontFamily else unselectedTextStyle.fontFamily
+                    color = colorInterpolator(index),
+                    fontSize = sizeInterpolator(index).sp,
+                    fontWeight = if (isItemSelected) selectedTextStyle.fontWeight else unselectedTextStyle.fontWeight,
+                    fontFamily = if (isItemSelected) selectedTextStyle.fontFamily else unselectedTextStyle.fontFamily
                 )
             })
         }
