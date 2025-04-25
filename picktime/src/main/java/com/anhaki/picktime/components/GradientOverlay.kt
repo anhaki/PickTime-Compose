@@ -17,9 +17,9 @@ internal fun GradientOverlay(
     color: Color,
     height: Dp
 ) {
-    Box (
+    Box(
         modifier = modifier
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)

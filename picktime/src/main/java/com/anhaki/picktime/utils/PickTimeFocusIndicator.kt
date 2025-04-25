@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
-data class PickTimeFocusIndicator (
+data class PickTimeFocusIndicator(
     val enabled: Boolean,
     val widthFull: Boolean = true,
     val background: Color = Color(0xFFFFFFFF),

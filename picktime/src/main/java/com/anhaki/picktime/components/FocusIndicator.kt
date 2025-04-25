@@ -23,11 +23,11 @@ internal fun FocusIndicator(
     selectedTextStyle: PickTimeTextStyle,
     minWidth: Dp
 ) {
-    if(focusIndicator.enabled){
+    if (focusIndicator.enabled) {
         val density = LocalDensity.current
 
         val selectedTextLineHeightPx = measureTextHeight(selectedTextStyle)
-        val selectedTextLineHeightDp = with(density){ selectedTextLineHeightPx.toDp() }
+        val selectedTextLineHeightDp = with(density) { selectedTextLineHeightPx.toDp() }
 
         val modifier = Modifier
             .border(focusIndicator.border, focusIndicator.shape)
@@ -39,9 +39,9 @@ internal fun FocusIndicator(
 
         Box(
             modifier =
-            if(focusIndicator.widthFull) {
+            if (focusIndicator.widthFull) {
                 modifier.fillMaxWidth()
-            } else{
+            } else {
                 modifier.width(minWidth)
             }
         )

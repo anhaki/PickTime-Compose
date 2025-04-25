@@ -42,9 +42,15 @@ internal fun NumberWheel(
     overlayColor: Color
 ) {
     val listState =
-        if(isLooping){
-            rememberLazyListState(nearestIndexTarget(Int.MAX_VALUE / 2, (selectedItem - extraRow) + 1, items.size))
-        } else{
+        if (isLooping) {
+            rememberLazyListState(
+                nearestIndexTarget(
+                    Int.MAX_VALUE / 2,
+                    (selectedItem - extraRow) + 1,
+                    items.size
+                )
+            )
+        } else {
             rememberLazyListState(initialFirstVisibleItemIndex = selectedItem + 1)
         }
 
@@ -56,11 +62,12 @@ internal fun NumberWheel(
 
     val selectedTextLineWidthPx = measureTextWidth(selectedTextStyle)
 
-    val selectedTextLineHeightDp = with(density){ selectedTextLineHeightPx.toDp() }
-    val selectedTextLineWidthDp = with(density){ selectedTextLineWidthPx.toDp() }
-    val unselectedTextLineHeightDp = with(density){ unselectedTextLineHeightPx.toDp() }
+    val selectedTextLineHeightDp = with(density) { selectedTextLineHeightPx.toDp() }
+    val selectedTextLineWidthDp = with(density) { selectedTextLineWidthPx.toDp() }
+    val unselectedTextLineHeightDp = with(density) { unselectedTextLineHeightPx.toDp() }
 
-    val wheelHeight = (unselectedTextLineHeightDp * (extraRow * 2)) + (space * (extraRow * 2 + 2)) + selectedTextLineHeightDp
+    val wheelHeight =
+        (unselectedTextLineHeightDp * (extraRow * 2)) + (space * (extraRow * 2 + 2)) + selectedTextLineHeightDp
 
     val maxOffset = with(density) { unselectedTextLineHeightPx + space.toPx() }
 
@@ -72,8 +79,18 @@ internal fun NumberWheel(
 
     val sizeInterpolator = { index: Int ->
         when (index) {
-            firstIndex -> transition(selectedTextStyle.fontSize.value, unselectedTextStyle.fontSize.value, progress)
-            firstIndex + 1 -> transition(unselectedTextStyle.fontSize.value, selectedTextStyle.fontSize.value, progress)
+            firstIndex -> transition(
+                selectedTextStyle.fontSize.value,
+                unselectedTextStyle.fontSize.value,
+                progress
+            )
+
+            firstIndex + 1 -> transition(
+                unselectedTextStyle.fontSize.value,
+                selectedTextStyle.fontSize.value,
+                progress
+            )
+
             else -> unselectedTextStyle.fontSize.value
         }
     }
@@ -81,7 +98,12 @@ internal fun NumberWheel(
     val heightInterpolator = { index: Int ->
         when (index) {
             firstIndex -> transition(selectedTextLineHeightPx, unselectedTextLineHeightPx, progress)
-            firstIndex + 1 -> transition(unselectedTextLineHeightPx, selectedTextLineHeightPx, progress)
+            firstIndex + 1 -> transition(
+                unselectedTextLineHeightPx,
+                selectedTextLineHeightPx,
+                progress
+            )
+
             else -> unselectedTextLineHeightPx
         }
     }
@@ -89,16 +111,21 @@ internal fun NumberWheel(
     val colorInterpolator = { index: Int ->
         when (index) {
             firstIndex -> transition(selectedTextStyle.color, unselectedTextStyle.color, progress)
-            firstIndex + 1 -> transition(unselectedTextStyle.color, selectedTextStyle.color, progress)
+            firstIndex + 1 -> transition(
+                unselectedTextStyle.color,
+                selectedTextStyle.color,
+                progress
+            )
+
             else -> unselectedTextStyle.color
         }
     }
 
     LaunchedEffect(firstVisibleOffset) {
-        if(isLooping){
-            onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow)  % items.size])
+        if (isLooping) {
+            onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow) % items.size])
         } else {
-            onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0)  % items.size])
+            onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0) % items.size])
         }
     }
 
@@ -120,10 +147,13 @@ internal fun NumberWheel(
             state = listState,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(space),
-            contentPadding = PaddingValues(top = space, bottom = if(isLooping) space else (space * (extraRow + 1)) + (unselectedTextLineHeightDp * extraRow))
+            contentPadding = PaddingValues(
+                top = space,
+                bottom = if (isLooping) space else (space * (extraRow + 1)) + (unselectedTextLineHeightDp * extraRow)
+            )
         ) {
-            if(!isLooping) {
-                for (x in (1..extraRow)){
+            if (!isLooping) {
+                for (x in (1..extraRow)) {
                     item {
                         Text(
                             modifier = Modifier.height(unselectedTextLineHeightDp),
@@ -137,17 +167,17 @@ internal fun NumberWheel(
                 }
             }
 
-            items(count = if(isLooping) Int.MAX_VALUE else items.size, itemContent = {
+            items(count = if (isLooping) Int.MAX_VALUE else items.size, itemContent = {
                 val itemIndex = it % items.size
                 val item = items[itemIndex]
                 val countIndex = it % Int.MAX_VALUE
                 val isItemSelected = selectedItem == items[itemIndex] - 1
-                val index = if(isLooping) countIndex - extraRow else itemIndex
+                val index = if (isLooping) countIndex - extraRow else itemIndex
 
                 Box(
-                    modifier = Modifier.height(with(density){ heightInterpolator(index).toDp() }),
+                    modifier = Modifier.height(with(density) { heightInterpolator(index).toDp() }),
                     contentAlignment = Alignment.Center
-                    ) {
+                ) {
                     Text(
                         text = item.toString().padStart(2, '0'),
                         color = colorInterpolator(index),
@@ -159,7 +189,9 @@ internal fun NumberWheel(
             })
         }
         GradientOverlay(
-            modifier = Modifier.height(wheelHeight).fillMaxWidth(),
+            modifier = Modifier
+                .height(wheelHeight)
+                .fillMaxWidth(),
             color = overlayColor,
             height = unselectedTextLineHeightDp + space
         )
