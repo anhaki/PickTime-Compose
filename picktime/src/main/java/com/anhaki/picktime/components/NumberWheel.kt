@@ -1,6 +1,5 @@
 package com.anhaki.picktime.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,17 +17,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anhaki.picktime.utils.PickTimeTextStyle
-import com.anhaki.picktime.utils.measureTextHeights
+import com.anhaki.picktime.utils.measureTextHeight
 import com.anhaki.picktime.utils.measureTextWidth
 import kotlinx.coroutines.launch
 
@@ -56,16 +51,13 @@ internal fun NumberWheel(
     val coroutineScope = rememberCoroutineScope()
     val density = LocalDensity.current
 
-    val (selectedTextLineHeightPx, unselectedTextLineHeightPx) = measureTextHeights(
-        selectedTextStyle = selectedTextStyle,
-        unselectedTextStyle = unselectedTextStyle
-    )
+    val selectedTextLineHeightPx = measureTextHeight(selectedTextStyle)
+    val unselectedTextLineHeightPx = measureTextHeight(unselectedTextStyle)
 
-    val selectedTextLineWidthPx = measureTextWidth(
-        selectedTextStyle = selectedTextStyle,
-    )
+    val selectedTextLineWidthPx = measureTextWidth(selectedTextStyle)
 
     val selectedTextLineHeightDp = with(density){ selectedTextLineHeightPx.toDp() }
+    val selectedTextLineWidthDp = with(density){ selectedTextLineWidthPx.toDp() }
     val unselectedTextLineHeightDp = with(density){ unselectedTextLineHeightPx.toDp() }
 
     val wheelHeight = (unselectedTextLineHeightDp * (extraRow * 2)) + (space * (extraRow * 2 + 2)) + selectedTextLineHeightDp
@@ -121,7 +113,7 @@ internal fun NumberWheel(
     Box(
         modifier = modifier
             .height(wheelHeight)
-            .width(selectedTextLineWidthPx.dp),
+            .width(selectedTextLineWidthDp),
         contentAlignment = Alignment.Center
     ) {
         LazyColumn(
@@ -152,16 +144,18 @@ internal fun NumberWheel(
                 val isItemSelected = selectedItem == items[itemIndex] - 1
                 val index = if(isLooping) countIndex - extraRow else itemIndex
 
-
-                Text(
-                    modifier = Modifier
-                        .height(with(density){ heightInterpolator(index).toDp() }),
-                    text = item.toString().padStart(2, '0'),
-                    color = colorInterpolator(index),
-                    fontSize = sizeInterpolator(index).sp,
-                    fontWeight = if (isItemSelected) selectedTextStyle.fontWeight else unselectedTextStyle.fontWeight,
-                    fontFamily = if (isItemSelected) selectedTextStyle.fontFamily else unselectedTextStyle.fontFamily
-                )
+                Box(
+                    modifier = Modifier.height(with(density){ heightInterpolator(index).toDp() }),
+                    contentAlignment = Alignment.Center
+                    ) {
+                    Text(
+                        text = item.toString().padStart(2, '0'),
+                        color = colorInterpolator(index),
+                        fontSize = sizeInterpolator(index).sp,
+                        fontWeight = if (isItemSelected) selectedTextStyle.fontWeight else unselectedTextStyle.fontWeight,
+                        fontFamily = if (isItemSelected) selectedTextStyle.fontFamily else unselectedTextStyle.fontFamily
+                    )
+                }
             })
         }
         GradientOverlay(

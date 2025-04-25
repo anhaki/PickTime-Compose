@@ -25,8 +25,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PickTimeTheme{
-                var hour by remember { mutableIntStateOf(4) }
-                var minute by remember { mutableIntStateOf(10) }
+                var hour by remember { mutableIntStateOf(0) }
+                var minute by remember { mutableIntStateOf(0) }
                 Column (
                     modifier = Modifier.background(Color.White).fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
