@@ -166,6 +166,7 @@ internal fun <T> Wheel(
         contentAlignment = Alignment.Center
     ) {
         LazyColumn(
+            modifier = Modifier.width(selectedTextLineWidthDp),
             state = listState,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(space),
@@ -178,7 +179,7 @@ internal fun <T> Wheel(
                 for (x in 1..extraRow) {
                     item {
                         Text(
-                            modifier = Modifier.height(unselectedTextLineHeightDp),
+                            modifier = Modifier.height(unselectedTextLineHeightDp).fillMaxWidth(),
                             text = " ",
                             color = Color.Transparent,
                             fontSize = unselectedTextStyle.fontSize,

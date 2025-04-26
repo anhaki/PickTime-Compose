@@ -24,22 +24,20 @@ import com.anhaki.picktime.utils.PickTimeTextStyle
 /**
  * A high-level composable that displays multiple wheels horizontally with a focus indicator.
  *
- * @param wheels A list of composable lambdas representing each wheel to be displayed.
  * @param selectedTextStyle Text style for selected items inside the wheels.
  * @param verticalSpace Vertical space around the selected item in the focus indicator.
- * @param horizontalSpace Horizontal spacing between wheels.
  * @param containerColor Background color of the entire picker container.
  * @param focusIndicator The style configuration for the focus indicator.
+ * @param content Content to be displayed.
  */
 
 @Composable
 fun GenericPickTime(
-    wheels: List<@Composable () -> Unit>,
     selectedTextStyle: PickTimeTextStyle,
     verticalSpace: Dp,
-    horizontalSpace: Dp,
     containerColor: Color,
-    focusIndicator: PickTimeFocusIndicator
+    focusIndicator: PickTimeFocusIndicator,
+    content: @Composable () -> Unit,
 ) {
     val density = LocalDensity.current
     var minContainerWidth by remember { mutableStateOf<Dp?>(null) }
@@ -66,12 +64,7 @@ fun GenericPickTime(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            wheels.forEachIndexed { index, wheel ->
-                if (index != 0) {
-                    Spacer(modifier = Modifier.width(horizontalSpace))
-                }
-                wheel()
-            }
+            content()
         }
     }
 }

@@ -1,9 +1,13 @@
 package com.anhaki.picktime
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -80,63 +84,55 @@ fun PickHourMinuteSecond(
     } else selectedTextStyle
 
     GenericPickTime(
-        wheels = listOf(
-            {
-                NumberWheel(
-                    items = (0..23).toList(),
-                    selectedItem = hour,
-                    onItemSelected = onHourChange,
-                    space = verticalSpace,
-                    selectedTextStyle = adjustedSelectedTextStyle,
-                    unselectedTextStyle = unselectedTextStyle,
-                    extraRow = row,
-                    isLooping = isLooping,
-                    overlayColor = containerColor,
-                )
-            },
-            {
-                Text(
-                    text = ":",
-                    style = adjustedSelectedTextStyle.toTextStyle()
-                )
-            },
-            {
-                NumberWheel(
-                    items = (0..59).toList(),
-                    selectedItem = minute,
-                    onItemSelected = onMinuteChange,
-                    space = verticalSpace,
-                    selectedTextStyle = adjustedSelectedTextStyle,
-                    unselectedTextStyle = unselectedTextStyle,
-                    extraRow = row,
-                    isLooping = isLooping,
-                    overlayColor = containerColor,
-                )
-            },
-            {
-                Text(
-                    text = ":",
-                    style = adjustedSelectedTextStyle.toTextStyle()
-                )
-            },
-            {
-                NumberWheel(
-                    items = (0..59).toList(),
-                    selectedItem = second,
-                    onItemSelected = onSecondChange,
-                    space = verticalSpace,
-                    selectedTextStyle = adjustedSelectedTextStyle,
-                    unselectedTextStyle = unselectedTextStyle,
-                    extraRow = row,
-                    isLooping = isLooping,
-                    overlayColor = containerColor,
-                )
-            }
-        ),
         selectedTextStyle = adjustedSelectedTextStyle,
         verticalSpace = verticalSpace,
-        horizontalSpace = horizontalSpace,
         containerColor = containerColor,
         focusIndicator = focusIndicator
-    )
+    ){
+        NumberWheel(
+            items = (0..23).toList(),
+            selectedItem = hour,
+            onItemSelected = onHourChange,
+            space = verticalSpace,
+            selectedTextStyle = adjustedSelectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = row,
+            isLooping = isLooping,
+            overlayColor = containerColor,
+        )
+        Spacer(modifier = Modifier.width(horizontalSpace))
+        Text(
+            text = ":",
+            style = adjustedSelectedTextStyle.toTextStyle()
+        )
+        Spacer(modifier = Modifier.width(horizontalSpace))
+        NumberWheel(
+            items = (0..59).toList(),
+            selectedItem = minute,
+            onItemSelected = onMinuteChange,
+            space = verticalSpace,
+            selectedTextStyle = adjustedSelectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = row,
+            isLooping = isLooping,
+            overlayColor = containerColor,
+        )
+        Spacer(modifier = Modifier.width(horizontalSpace))
+            Text(
+                text = ":",
+                style = adjustedSelectedTextStyle.toTextStyle()
+            )
+        Spacer(modifier = Modifier.width(horizontalSpace))
+        NumberWheel(
+            items = (0..59).toList(),
+            selectedItem = second,
+            onItemSelected = onSecondChange,
+            space = verticalSpace,
+            selectedTextStyle = adjustedSelectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = row,
+            isLooping = isLooping,
+            overlayColor = containerColor,
+        )
+    }
 }

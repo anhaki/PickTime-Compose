@@ -1,9 +1,13 @@
 package com.anhaki.picktime
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -14,6 +18,7 @@ import com.anhaki.picktime.components.GenericPickTime
 import com.anhaki.picktime.components.NumberWheel
 import com.anhaki.picktime.utils.PickTimeFocusIndicator
 import com.anhaki.picktime.utils.PickTimeTextStyle
+import com.anhaki.picktime.utils.TimeFormat
 
 /**
  * A composable function that creates a customizable layout consisting of hour and minute wheel pickers,
@@ -53,6 +58,7 @@ fun PickHourMinute(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
     ),
+    timeFormat: TimeFormat = TimeFormat.HOUR_24,
     verticalSpace: Dp = 10.dp,
     horizontalSpace: Dp = 10.dp,
     containerColor: Color = Color(0xFFFFFFFF),
@@ -66,8 +72,17 @@ fun PickHourMinute(
         border = BorderStroke(4.dp, Color(0xFFEE4720)),
     )
 ) {
-    val hour = initialHour.coerceIn(0, 23)
-    val minute = initialMinute.coerceIn(0, 59)
+    val hourRange = when(timeFormat){
+        TimeFormat.HOUR_24 -> {
+            (0..23)
+        }
+        TimeFormat.HOUR_12 -> {
+            (1..12)
+        }
+    }
+    val minuteRange = (0..59)
+    val hour = initialHour.coerceIn(hourRange.first, hourRange.last)
+    val minute = initialMinute.coerceIn(minuteRange.first, minuteRange.last)
     val row = extraRow.coerceIn(1, 5)
 
     val adjustedSelectedTextStyle = if (selectedTextStyle.fontSize < unselectedTextStyle.fontSize) {
@@ -75,44 +90,38 @@ fun PickHourMinute(
     } else selectedTextStyle
 
     GenericPickTime(
-        wheels = listOf(
-            {
-                NumberWheel(
-                    items = (0..23).toList(),
-                    selectedItem = hour,
-                    onItemSelected = onHourChange,
-                    space = verticalSpace,
-                    selectedTextStyle = adjustedSelectedTextStyle,
-                    unselectedTextStyle = unselectedTextStyle,
-                    extraRow = row,
-                    isLooping = isLooping,
-                    overlayColor = containerColor,
-                )
-            },
-            {
-                Text(
-                    text = ":",
-                    style = adjustedSelectedTextStyle.toTextStyle()
-                )
-            },
-            {
-                NumberWheel(
-                    items = (0..59).toList(),
-                    selectedItem = minute,
-                    onItemSelected = onMinuteChange,
-                    space = verticalSpace,
-                    selectedTextStyle = adjustedSelectedTextStyle,
-                    unselectedTextStyle = unselectedTextStyle,
-                    extraRow = row,
-                    isLooping = isLooping,
-                    overlayColor = containerColor,
-                )
-            }
-        ),
         selectedTextStyle = adjustedSelectedTextStyle,
         verticalSpace = verticalSpace,
-        horizontalSpace = horizontalSpace,
         containerColor = containerColor,
         focusIndicator = focusIndicator
-    )
+    ){
+        NumberWheel(
+            items = hourRange.toList(),
+            selectedItem = hour,
+            onItemSelected = onHourChange,
+            space = verticalSpace,
+            selectedTextStyle = adjustedSelectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = row,
+            isLooping = isLooping,
+            overlayColor = containerColor,
+        )
+        Spacer(modifier = Modifier.width(horizontalSpace))
+        Text(
+            text = ":",
+            style = adjustedSelectedTextStyle.toTextStyle()
+        )
+        Spacer(modifier = Modifier.width(horizontalSpace))
+        NumberWheel(
+            items = minuteRange.toList(),
+            selectedItem = minute,
+            onItemSelected = onMinuteChange,
+            space = verticalSpace,
+            selectedTextStyle = adjustedSelectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = row,
+            isLooping = isLooping,
+            overlayColor = containerColor,
+        )
+    }
 }

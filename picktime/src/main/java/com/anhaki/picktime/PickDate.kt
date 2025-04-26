@@ -1,8 +1,12 @@
 package com.anhaki.picktime
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -94,51 +98,45 @@ fun PickDate(
 
 
     GenericPickTime(
-        wheels = listOf(
-            {
-                NumberWheel(
-                    items = dateRange.toList(),
-                    selectedItem = date,
-                    onItemSelected = onDateChange,
-                    space = verticalSpace,
-                    selectedTextStyle = adjustedSelectedTextStyle,
-                    unselectedTextStyle = unselectedTextStyle,
-                    extraRow = row,
-                    isLooping = isLooping,
-                    overlayColor = containerColor,
-                )
-            },
-            {
-                StringWheel(
-                    items = monthList,
-                    selectedItem = month,
-                    onItemSelected = onMonthChange,
-                    space = verticalSpace,
-                    selectedTextStyle = adjustedSelectedTextStyle,
-                    unselectedTextStyle = unselectedTextStyle,
-                    extraRow = row,
-                    isLooping = isLooping,
-                    overlayColor = containerColor
-                )
-            },
-            {
-                NumberWheel(
-                    items = yearRange.toList(),
-                    selectedItem = year,
-                    onItemSelected = onYearChange,
-                    space = verticalSpace,
-                    selectedTextStyle = adjustedSelectedTextStyle,
-                    unselectedTextStyle = unselectedTextStyle,
-                    extraRow = row,
-                    isLooping = isLooping,
-                    overlayColor = containerColor,
-                )
-            }
-        ),
         selectedTextStyle = adjustedSelectedTextStyle,
         verticalSpace = verticalSpace,
-        horizontalSpace = horizontalSpace,
         containerColor = containerColor,
         focusIndicator = focusIndicator
-    )
+    ) {
+        NumberWheel(
+            items = dateRange.toList(),
+            selectedItem = date,
+            onItemSelected = onDateChange,
+            space = verticalSpace,
+            selectedTextStyle = adjustedSelectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = row,
+            isLooping = isLooping,
+            overlayColor = containerColor,
+        )
+        Spacer(modifier = Modifier.width(horizontalSpace))
+        StringWheel(
+            items = monthList,
+            selectedItem = month,
+            onItemSelected = onMonthChange,
+            space = verticalSpace,
+            selectedTextStyle = adjustedSelectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = row,
+            isLooping = isLooping,
+            overlayColor = containerColor
+        )
+        Spacer(modifier = Modifier.width(horizontalSpace))
+        NumberWheel(
+            items = yearRange.toList(),
+            selectedItem = year,
+            onItemSelected = onYearChange,
+            space = verticalSpace,
+            selectedTextStyle = adjustedSelectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = row,
+            isLooping = isLooping,
+            overlayColor = containerColor,
+        )
+    }
 }
