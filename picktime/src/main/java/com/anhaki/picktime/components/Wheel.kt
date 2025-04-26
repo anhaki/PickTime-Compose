@@ -1,0 +1,197 @@
+package com.anhaki.picktime.components
+
+import com.anhaki.picktime.utils.measureTextHeight
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.sp
+import com.anhaki.picktime.utils.PickTimeTextStyle
+import com.anhaki.picktime.utils.measureTextWidth
+import kotlinx.coroutines.launch
+
+@Composable
+internal fun <T> Wheel(
+    modifier: Modifier = Modifier,
+    items: List<T>,
+    selectedItem: Int,
+    onItemSelected: (Int) -> Unit,
+    space: Dp,
+    selectedTextStyle: PickTimeTextStyle,
+    unselectedTextStyle: PickTimeTextStyle,
+    extraRow: Int,
+    isLooping: Boolean,
+    overlayColor: Color,
+    itemToString: (T) -> String,
+    longestText: String,
+) {
+    var localSelectedItem by remember { mutableIntStateOf(selectedItem) }
+
+    val listState = if (isLooping) {
+        rememberLazyListState(
+            nearestIndexTarget(
+                localSelectedItem - extraRow,
+                items.size
+            )
+        )
+    } else {
+        rememberLazyListState(initialFirstVisibleItemIndex = localSelectedItem)
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+    val density = LocalDensity.current
+
+    val selectedTextLineHeightPx = measureTextHeight(selectedTextStyle)
+    val selectedTextLineHeightDp = with(density) { selectedTextLineHeightPx.toDp() }
+
+    val unselectedTextLineHeightPx = measureTextHeight(unselectedTextStyle)
+    val unselectedTextLineHeightDp = with(density) { unselectedTextLineHeightPx.toDp() }
+
+    val selectedTextLineWidthPx = measureTextWidth(longestText, selectedTextStyle)
+    val selectedTextLineWidthDp = with(density) { selectedTextLineWidthPx.toDp() }
+
+    val wheelHeight =
+        (unselectedTextLineHeightDp * (extraRow * 2)) + (space * (extraRow * 2 + 2)) + selectedTextLineHeightDp
+
+    val maxOffset = with(density) { unselectedTextLineHeightPx + space.toPx() }
+
+    val firstIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
+    val firstVisibleOffset by remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }
+    val isScrolling by remember { derivedStateOf { listState.isScrollInProgress } }
+    val progress = (firstVisibleOffset / maxOffset).coerceIn(0f, 1f)
+
+    val sizeInterpolator = { index: Int ->
+        when (index) {
+            firstIndex -> transition(selectedTextStyle.fontSize.value, unselectedTextStyle.fontSize.value, progress)
+            firstIndex + 1 -> transition(unselectedTextStyle.fontSize.value, selectedTextStyle.fontSize.value, progress)
+            else -> unselectedTextStyle.fontSize.value
+        }
+    }
+
+    val heightInterpolator = { index: Int ->
+        when (index) {
+            firstIndex -> transition(selectedTextLineHeightPx, unselectedTextLineHeightPx, progress)
+            firstIndex + 1 -> transition(unselectedTextLineHeightPx, selectedTextLineHeightPx, progress)
+            else -> unselectedTextLineHeightPx
+        }
+    }
+
+    val colorInterpolator = { index: Int ->
+        when (index) {
+            firstIndex -> transition(selectedTextStyle.color, unselectedTextStyle.color, progress)
+            firstIndex + 1 -> transition(unselectedTextStyle.color, selectedTextStyle.color, progress)
+            else -> unselectedTextStyle.color
+        }
+    }
+
+    LaunchedEffect(firstVisibleOffset) {
+        val selected = if (isLooping) {
+            (firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow) % items.size
+        } else {
+            (firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0) % items.size
+        }
+        onItemSelected(selected)
+        localSelectedItem = selected
+    }
+
+    LaunchedEffect(isScrolling) {
+        if (!isScrolling) {
+            coroutineScope.launch {
+                listState.animateScrollToItem(firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0)
+            }
+        }
+    }
+
+    Box(
+        modifier = modifier
+            .height(wheelHeight)
+            .width(selectedTextLineWidthDp),
+        contentAlignment = Alignment.Center
+    ) {
+        LazyColumn(
+            state = listState,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(space),
+            contentPadding = PaddingValues(
+                top = space,
+                bottom = if (isLooping) space else (space * (extraRow + 1)) + (unselectedTextLineHeightDp * extraRow)
+            )
+        ) {
+            if (!isLooping) {
+                for (x in 1..extraRow) {
+                    item {
+                        Text(
+                            modifier = Modifier.height(unselectedTextLineHeightDp),
+                            text = " ",
+                            color = Color.Transparent,
+                            fontSize = unselectedTextStyle.fontSize,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = unselectedTextStyle.fontFamily
+                        )
+                    }
+                }
+            }
+
+            items(count = if (isLooping) Int.MAX_VALUE else items.size) { index ->
+                val itemIndex = index % items.size
+                val item = items[itemIndex]
+                val countIndex = index % Int.MAX_VALUE
+                val isItemSelected = localSelectedItem == itemIndex
+                val adjustedIndex = if (isLooping) countIndex - extraRow else itemIndex
+
+                Box(
+                    modifier = Modifier.height(with(density) { heightInterpolator(adjustedIndex).toDp() }),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = itemToString(item),
+                        color = colorInterpolator(adjustedIndex),
+                        fontSize = sizeInterpolator(adjustedIndex).sp,
+                        fontWeight = if (isItemSelected) selectedTextStyle.fontWeight else unselectedTextStyle.fontWeight,
+                        fontFamily = if (isItemSelected) selectedTextStyle.fontFamily else unselectedTextStyle.fontFamily
+                    )
+                }
+            }
+        }
+
+        GradientOverlay(
+            modifier = Modifier
+                .height(wheelHeight)
+                .fillMaxWidth(),
+            color = overlayColor,
+            height = unselectedTextLineHeightDp + space
+        )
+    }
+}
+
+// Helpers
+private fun transition(start: Float, end: Float, fraction: Float): Float {
+    return start + (end - start) * fraction
+}
+
+private fun transition(start: Color, end: Color, fraction: Float): Color {
+    return Color(
+        start.red + (end.red - start.red) * fraction,
+        start.green + (end.green - start.green) * fraction,
+        start.blue + (end.blue - start.blue) * fraction,
+        start.alpha + (end.alpha - start.alpha) * fraction
+    )
+}
+
+private fun nearestIndexTarget(target: Int, size: Int): Int {
+    val initialIndex = Int.MAX_VALUE / 2
+    val upperLimit = (initialIndex / size) * size + target
+    val lowerLimit = upperLimit + size
+    return if ((initialIndex - upperLimit) <= (lowerLimit - initialIndex)) {
+        upperLimit
+    } else {
+        lowerLimit
+    }
+}

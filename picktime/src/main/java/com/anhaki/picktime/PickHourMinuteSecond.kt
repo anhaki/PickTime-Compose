@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anhaki.picktime.components.FocusIndicator
+import com.anhaki.picktime.components.GenericPickTime
 import com.anhaki.picktime.components.NumberWheel
 import com.anhaki.picktime.utils.PickTimeFocusIndicator
 import com.anhaki.picktime.utils.PickTimeTextStyle
@@ -40,18 +41,18 @@ fun PickHourMinuteSecond(
     onSecondChange: (Int) -> Unit,
     selectedTextStyle: PickTimeTextStyle = PickTimeTextStyle(
         color = Color(0xFF404040),
-        fontSize = 40.sp,
+        fontSize = 24.sp,
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
     ),
     unselectedTextStyle: PickTimeTextStyle = PickTimeTextStyle(
         color = Color(0xFF9F9F9F),
-        fontSize = 40.sp,
+        fontSize = 18.sp,
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
     ),
-    verticalSpace: Dp = 12.dp,
-    horizontalSpace: Dp = 15.dp,
+    verticalSpace: Dp = 10.dp,
+    horizontalSpace: Dp = 10.dp,
     containerColor: Color = Color(0xFFFFFFFF),
     isLooping: Boolean = false,
     extraRow: Int = 2,
@@ -63,8 +64,6 @@ fun PickHourMinuteSecond(
         border = BorderStroke(4.dp, Color(0xFFEE4720)),
     )
 ) {
-    val density = LocalDensity.current
-
     val hour = initialHour.coerceIn(0, 23)
     val minute = initialMinute.coerceIn(0, 59)
     val second = initialSecond.coerceIn(0, 59)
@@ -74,74 +73,64 @@ fun PickHourMinuteSecond(
         selectedTextStyle.copy(fontSize = unselectedTextStyle.fontSize)
     } else selectedTextStyle
 
-    var minContainerWidth by remember { mutableStateOf(0.dp) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(containerColor),
-        contentAlignment = Alignment.Center
-    ) {
-        FocusIndicator(
-            focusIndicator = focusIndicator,
-            selectedTextStyle = adjustedSelectedTextStyle,
-            minWidth = minContainerWidth,
-        )
-        Row(
-            modifier = Modifier
-                .onGloballyPositioned {
-                    minContainerWidth = with(density) {
-                        it.size.width.toDp()
-                    }
-                },
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            NumberWheel(
-                items = (0..23).toList(),
-                selectedItem = hour,
-                space = verticalSpace,
-                onItemSelected = { onHourChange(it) },
-                selectedTextStyle = adjustedSelectedTextStyle,
-                unselectedTextStyle = unselectedTextStyle,
-                extraRow = row,
-                isLooping = isLooping,
-                overlayColor = containerColor
-            )
-            Spacer(modifier = Modifier.width(horizontalSpace))
-            Text(
-                text = ":",
-                style = adjustedSelectedTextStyle.toTextStyle()
-            )
-            Spacer(modifier = Modifier.width(horizontalSpace))
-            NumberWheel(
-                items = (0..59).toList(),
-                selectedItem = minute,
-                onItemSelected = { onMinuteChange(it) },
-                space = verticalSpace,
-                selectedTextStyle = adjustedSelectedTextStyle,
-                unselectedTextStyle = unselectedTextStyle,
-                extraRow = row,
-                isLooping = isLooping,
-                overlayColor = containerColor,
-            )
-            Spacer(modifier = Modifier.width(horizontalSpace))
-            Text(
-                text = ":",
-                style = adjustedSelectedTextStyle.toTextStyle()
-            )
-            Spacer(modifier = Modifier.width(horizontalSpace))
-            NumberWheel(
-                items = (0..59).toList(),
-                selectedItem = second,
-                onItemSelected = { onSecondChange(it) },
-                space = verticalSpace,
-                selectedTextStyle = adjustedSelectedTextStyle,
-                unselectedTextStyle = unselectedTextStyle,
-                extraRow = row,
-                isLooping = isLooping,
-                overlayColor = containerColor,
-            )
-        }
-    }
+    GenericPickTime(
+        wheels = listOf(
+            {
+                NumberWheel(
+                    items = (0..23).toList(),
+                    selectedItem = hour,
+                    onItemSelected = onHourChange,
+                    space = verticalSpace,
+                    selectedTextStyle = adjustedSelectedTextStyle,
+                    unselectedTextStyle = unselectedTextStyle,
+                    extraRow = row,
+                    isLooping = isLooping,
+                    overlayColor = containerColor,
+                )
+            },
+            {
+                Text(
+                    text = ":",
+                    style = adjustedSelectedTextStyle.toTextStyle()
+                )
+            },
+            {
+                NumberWheel(
+                    items = (0..59).toList(),
+                    selectedItem = minute,
+                    onItemSelected = onMinuteChange,
+                    space = verticalSpace,
+                    selectedTextStyle = adjustedSelectedTextStyle,
+                    unselectedTextStyle = unselectedTextStyle,
+                    extraRow = row,
+                    isLooping = isLooping,
+                    overlayColor = containerColor,
+                )
+            },
+            {
+                Text(
+                    text = ":",
+                    style = adjustedSelectedTextStyle.toTextStyle()
+                )
+            },
+            {
+                NumberWheel(
+                    items = (0..59).toList(),
+                    selectedItem = second,
+                    onItemSelected = onSecondChange,
+                    space = verticalSpace,
+                    selectedTextStyle = adjustedSelectedTextStyle,
+                    unselectedTextStyle = unselectedTextStyle,
+                    extraRow = row,
+                    isLooping = isLooping,
+                    overlayColor = containerColor,
+                )
+            }
+        ),
+        selectedTextStyle = adjustedSelectedTextStyle,
+        verticalSpace = verticalSpace,
+        horizontalSpace = horizontalSpace,
+        containerColor = containerColor,
+        focusIndicator = focusIndicator
+    )
 }
