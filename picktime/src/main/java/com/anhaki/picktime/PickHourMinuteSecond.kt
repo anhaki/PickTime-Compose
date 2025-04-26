@@ -2,7 +2,6 @@ package com.anhaki.picktime
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -74,9 +73,9 @@ fun PickHourMinuteSecond(
         border = BorderStroke(4.dp, Color(0xFFEE4720)),
     )
 ) {
-    val hour = initialHour.coerceIn(0, 23)
-    val minute = initialMinute.coerceIn(0, 59)
-    val second = initialSecond.coerceIn(0, 59)
+    val displayedHour = initialHour.coerceIn(0, 23)
+    val displayedMinute = initialMinute.coerceIn(0, 59)
+    val displayedSecond = initialSecond.coerceIn(0, 59)
     val row = extraRow.coerceIn(1, 5)
 
     val adjustedSelectedTextStyle = if (selectedTextStyle.fontSize < unselectedTextStyle.fontSize) {
@@ -91,7 +90,7 @@ fun PickHourMinuteSecond(
     ){
         NumberWheel(
             items = (0..23).toList(),
-            selectedItem = hour,
+            selectedItem = displayedHour,
             onItemSelected = onHourChange,
             space = verticalSpace,
             selectedTextStyle = adjustedSelectedTextStyle,
@@ -108,7 +107,7 @@ fun PickHourMinuteSecond(
         Spacer(modifier = Modifier.width(horizontalSpace))
         NumberWheel(
             items = (0..59).toList(),
-            selectedItem = minute,
+            selectedItem = displayedMinute,
             onItemSelected = onMinuteChange,
             space = verticalSpace,
             selectedTextStyle = adjustedSelectedTextStyle,
@@ -125,7 +124,7 @@ fun PickHourMinuteSecond(
         Spacer(modifier = Modifier.width(horizontalSpace))
         NumberWheel(
             items = (0..59).toList(),
-            selectedItem = second,
+            selectedItem = displayedSecond,
             onItemSelected = onSecondChange,
             space = verticalSpace,
             selectedTextStyle = adjustedSelectedTextStyle,

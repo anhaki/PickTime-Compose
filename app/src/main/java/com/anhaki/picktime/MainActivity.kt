@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anhaki.picktime.ui.theme.PickTimeTheme
 import com.anhaki.picktime.utils.PickTimeTextStyle
+import com.anhaki.picktime.utils.TimeFormat
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +56,8 @@ class MainActivity : ComponentActivity() {
                         onHourChange = { hour = it },
                         initialMinute = minute,
                         onMinuteChange = { minute = it },
+                        timeFormat = TimeFormat.HOUR_12,
+                        isLooping = true
                     )
                     PickDate(
                         initialDate = date,

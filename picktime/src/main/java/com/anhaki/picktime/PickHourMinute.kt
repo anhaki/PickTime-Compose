@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anhaki.picktime.components.GenericPickTime
 import com.anhaki.picktime.components.NumberWheel
+import com.anhaki.picktime.components.StringWheel
 import com.anhaki.picktime.utils.PickTimeFocusIndicator
 import com.anhaki.picktime.utils.PickTimeTextStyle
 import com.anhaki.picktime.utils.TimeFormat
@@ -81,8 +82,23 @@ fun PickHourMinute(
         }
     }
     val minuteRange = (0..59)
-    val hour = initialHour.coerceIn(hourRange.first, hourRange.last)
-    val minute = initialMinute.coerceIn(minuteRange.first, minuteRange.last)
+    val displayedHour = when (timeFormat) {
+        TimeFormat.HOUR_24 -> initialHour.coerceIn(0, 23)
+        TimeFormat.HOUR_12 -> {
+            when (initialHour % 12) {
+                0 -> 12
+                else -> initialHour % 12
+            }
+        }
+    }
+
+    val displayedMinute = initialMinute.coerceIn(0, 59)
+
+    val initialAmPm = when {
+        initialHour in 0..11 -> 1 // AM
+        else -> 2 // PM
+    }
+
     val row = extraRow.coerceIn(1, 5)
 
     val adjustedSelectedTextStyle = if (selectedTextStyle.fontSize < unselectedTextStyle.fontSize) {
@@ -97,8 +113,21 @@ fun PickHourMinute(
     ){
         NumberWheel(
             items = hourRange.toList(),
-            selectedItem = hour,
-            onItemSelected = onHourChange,
+            selectedItem = displayedHour,
+            onItemSelected = { selectedHour ->
+                val newHour = when (timeFormat) {
+                    TimeFormat.HOUR_24 -> selectedHour
+                    TimeFormat.HOUR_12 -> {
+                        val amPmAdjustedHour = if (initialAmPm == 1) { // AM
+                            if (selectedHour == 12) 0 else selectedHour
+                        } else { // PM
+                            if (selectedHour == 12) 12 else selectedHour + 12
+                        }
+                        amPmAdjustedHour
+                    }
+                }
+                onHourChange(newHour)
+            },
             space = verticalSpace,
             selectedTextStyle = adjustedSelectedTextStyle,
             unselectedTextStyle = unselectedTextStyle,
@@ -114,7 +143,7 @@ fun PickHourMinute(
         Spacer(modifier = Modifier.width(horizontalSpace))
         NumberWheel(
             items = minuteRange.toList(),
-            selectedItem = minute,
+            selectedItem = displayedMinute,
             onItemSelected = onMinuteChange,
             space = verticalSpace,
             selectedTextStyle = adjustedSelectedTextStyle,
@@ -123,5 +152,32 @@ fun PickHourMinute(
             isLooping = isLooping,
             overlayColor = containerColor,
         )
+        if(timeFormat == TimeFormat.HOUR_12){
+            Spacer(modifier = Modifier.width(horizontalSpace))
+            StringWheel(
+                items = listOf("AM", "PM"),
+                selectedItem = initialAmPm,
+                onItemSelected = {
+                    val adjustedHour = when (it) {
+                        1 -> { // AM
+                            if (initialHour in 12..23) initialHour - 12 else initialHour
+                        }
+                        2 -> { // PM
+                            if (initialHour in 0..11) {
+                                if (initialHour == 0) 12 else initialHour + 12
+                            } else initialHour
+                        }
+                        else -> initialHour
+                    }
+                    onHourChange(adjustedHour)
+                },
+                space = verticalSpace,
+                selectedTextStyle = adjustedSelectedTextStyle,
+                unselectedTextStyle = unselectedTextStyle,
+                extraRow = row,
+                isLooping = false,
+                overlayColor = containerColor
+            )
+        }
     }
 }

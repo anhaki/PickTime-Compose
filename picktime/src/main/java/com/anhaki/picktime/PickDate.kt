@@ -2,7 +2,6 @@ package com.anhaki.picktime
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -86,9 +85,9 @@ fun PickDate(
         border = BorderStroke(4.dp, Color(0xFFEE4720)),
     )
 ) {
-    val date = initialDate.coerceIn(dateRange.first(), dateRange.last())
-    val month = initialMonth.coerceIn(1, monthList.size)
-    val year = initialYear.coerceIn(yearRange.first(), yearRange.last())
+    val displayedDate = initialDate.coerceIn(dateRange.first(), dateRange.last())
+    val displayedMonth = initialMonth.coerceIn(1, monthList.size)
+    val displayedYear = initialYear.coerceIn(yearRange.first(), yearRange.last())
 
     val row = extraRow.coerceIn(1, 5)
 
@@ -105,7 +104,7 @@ fun PickDate(
     ) {
         NumberWheel(
             items = dateRange.toList(),
-            selectedItem = date,
+            selectedItem = displayedDate,
             onItemSelected = onDateChange,
             space = verticalSpace,
             selectedTextStyle = adjustedSelectedTextStyle,
@@ -117,7 +116,7 @@ fun PickDate(
         Spacer(modifier = Modifier.width(horizontalSpace))
         StringWheel(
             items = monthList,
-            selectedItem = month,
+            selectedItem = displayedMonth,
             onItemSelected = onMonthChange,
             space = verticalSpace,
             selectedTextStyle = adjustedSelectedTextStyle,
@@ -129,7 +128,7 @@ fun PickDate(
         Spacer(modifier = Modifier.width(horizontalSpace))
         NumberWheel(
             items = yearRange.toList(),
-            selectedItem = year,
+            selectedItem = displayedYear,
             onItemSelected = onYearChange,
             space = verticalSpace,
             selectedTextStyle = adjustedSelectedTextStyle,
