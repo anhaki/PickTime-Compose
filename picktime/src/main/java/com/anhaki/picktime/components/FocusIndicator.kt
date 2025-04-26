@@ -29,13 +29,13 @@ internal fun FocusIndicator(
         val selectedTextLineHeightPx = measureTextHeight(selectedTextStyle)
         val selectedTextLineHeightDp = with(density) { selectedTextLineHeightPx.toDp() }
 
-        val modifier = Modifier
-            .border(focusIndicator.border, focusIndicator.shape)
+        var modifier = if(focusIndicator.border.width > 0.dp) Modifier.border(focusIndicator.border, focusIndicator.shape) else Modifier
+
+        modifier = modifier
             .clip(focusIndicator.shape)
             .background(focusIndicator.background)
             .padding(horizontal = 15.dp)
             .height(selectedTextLineHeightDp)
-
 
         Box(
             modifier =

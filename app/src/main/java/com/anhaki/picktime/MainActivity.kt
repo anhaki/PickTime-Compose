@@ -36,25 +36,25 @@ class MainActivity : ComponentActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.height(200.dp))
-//                    PickHourMinuteSecond(
-//                        initialHour = hour,
-//                        onHourChange = { hour = it },
-//                        initialMinute = minute,
-//                        onMinuteChange = { minute = it },
-//                        initialSecond = second,
-//                        onSecondChange = { second = it },
-//                    )
-                    PickHourMinute(
+                    PickHourMinuteSecond(
                         initialHour = hour,
                         onHourChange = { hour = it },
                         initialMinute = minute,
                         onMinuteChange = { minute = it },
+                        initialSecond = second,
+                        onSecondChange = { second = it },
                     )
+//                    PickHourMinute(
+//                        initialHour = hour,
+//                        onHourChange = { hour = it },
+//                        initialMinute = minute,
+//                        onMinuteChange = { minute = it },
+//                    )
                     Spacer(modifier = Modifier.height(40.dp))
 
                     Text(text = "Hour = $hour")
                     Text(text = "Minute = $minute")
-//                    Text(text = "Second = $second")
+                    Text(text = "Second = $second")
                 }
             }
         }

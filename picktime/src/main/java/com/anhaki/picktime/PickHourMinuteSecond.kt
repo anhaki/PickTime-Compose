@@ -125,6 +125,7 @@ fun PickHourMinuteSecond(
                 isLooping = isLooping,
                 overlayColor = containerColor,
             )
+            Spacer(modifier = Modifier.width(horizontalSpace))
             Text(
                 text = ":",
                 style = adjustedSelectedTextStyle.toTextStyle()
