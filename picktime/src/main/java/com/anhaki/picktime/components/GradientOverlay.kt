@@ -11,6 +11,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 
+/**
+ * A composable that creates a top and bottom gradient overlay to add visual fading effects
+ * for scrollable wheel content.
+ *
+ * @param modifier Modifier to apply to the parent container.
+ * @param color Base color used for the gradient overlay.
+ * @param height The height of each gradient overlay area (top and bottom).
+ */
+
 @Composable
 internal fun GradientOverlay(
     modifier: Modifier,

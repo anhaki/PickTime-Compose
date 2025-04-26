@@ -1,11 +1,22 @@
 package com.anhaki.picktime.components
 
-import com.anhaki.picktime.utils.measureTextHeight
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,8 +25,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.anhaki.picktime.utils.PickTimeTextStyle
+import com.anhaki.picktime.utils.measureTextHeight
 import com.anhaki.picktime.utils.measureTextWidth
 import kotlinx.coroutines.launch
+
+/**
+ * A generic composable that provides a scrollable wheel picker with smooth scrolling,
+ * dynamic styling transitions (size, color, height), and looping support.
+ *
+ * @param modifier Modifier applied to the wheel container.
+ * @param items List of items to display in the wheel.
+ * @param selectedItem Index of the currently selected item.
+ * @param onItemSelected Callback when an item is selected (returns the index).
+ * @param space Vertical spacing between items.
+ * @param selectedTextStyle Text style for the selected item.
+ * @param unselectedTextStyle Text style for unselected items.
+ * @param extraRow Number of invisible rows to pad at the top and bottom.
+ * @param isLooping Enables infinite looping scroll.
+ * @param overlayColor Color for gradient overlay.
+ * @param itemToString Function to convert item into string for display.
+ * @param longestText The longest text used to calculate the width of the wheel.
+ */
 
 @Composable
 internal fun <T> Wheel(
@@ -69,8 +99,18 @@ internal fun <T> Wheel(
 
     val sizeInterpolator = { index: Int ->
         when (index) {
-            firstIndex -> transition(selectedTextStyle.fontSize.value, unselectedTextStyle.fontSize.value, progress)
-            firstIndex + 1 -> transition(unselectedTextStyle.fontSize.value, selectedTextStyle.fontSize.value, progress)
+            firstIndex -> transition(
+                selectedTextStyle.fontSize.value,
+                unselectedTextStyle.fontSize.value,
+                progress
+            )
+
+            firstIndex + 1 -> transition(
+                unselectedTextStyle.fontSize.value,
+                selectedTextStyle.fontSize.value,
+                progress
+            )
+
             else -> unselectedTextStyle.fontSize.value
         }
     }
@@ -78,7 +118,12 @@ internal fun <T> Wheel(
     val heightInterpolator = { index: Int ->
         when (index) {
             firstIndex -> transition(selectedTextLineHeightPx, unselectedTextLineHeightPx, progress)
-            firstIndex + 1 -> transition(unselectedTextLineHeightPx, selectedTextLineHeightPx, progress)
+            firstIndex + 1 -> transition(
+                unselectedTextLineHeightPx,
+                selectedTextLineHeightPx,
+                progress
+            )
+
             else -> unselectedTextLineHeightPx
         }
     }
@@ -86,7 +131,12 @@ internal fun <T> Wheel(
     val colorInterpolator = { index: Int ->
         when (index) {
             firstIndex -> transition(selectedTextStyle.color, unselectedTextStyle.color, progress)
-            firstIndex + 1 -> transition(unselectedTextStyle.color, selectedTextStyle.color, progress)
+            firstIndex + 1 -> transition(
+                unselectedTextStyle.color,
+                selectedTextStyle.color,
+                progress
+            )
+
             else -> unselectedTextStyle.color
         }
     }

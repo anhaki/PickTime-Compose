@@ -18,9 +18,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.anhaki.picktime.utils.PickTimeFocusIndicator
 import com.anhaki.picktime.utils.PickTimeTextStyle
+
+/**
+ * A high-level composable that displays multiple wheels horizontally with a focus indicator.
+ *
+ * @param wheels A list of composable lambdas representing each wheel to be displayed.
+ * @param selectedTextStyle Text style for selected items inside the wheels.
+ * @param verticalSpace Vertical space around the selected item in the focus indicator.
+ * @param horizontalSpace Horizontal spacing between wheels.
+ * @param containerColor Background color of the entire picker container.
+ * @param focusIndicator The style configuration for the focus indicator.
+ */
 
 @Composable
 fun GenericPickTime(

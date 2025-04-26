@@ -6,6 +6,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import com.anhaki.picktime.utils.PickTimeTextStyle
 
+/**
+ * A composable wheel for picking numeric values, rendering numbers with two-digit formatting.
+ *
+ * @param modifier Modifier applied to the wheel layout.
+ * @param items List of integers to be displayed.
+ * @param selectedItem Currently selected item (by value, not index).
+ * @param onItemSelected Callback when an item is selected (returns the value).
+ * @param space Vertical spacing between wheel items.
+ * @param selectedTextStyle Text style for selected item.
+ * @param unselectedTextStyle Text style for unselected items.
+ * @param extraRow Number of additional rows (empty or transparent) above and below the list to create a center focus effect.
+ * @param isLooping Whether the wheel should loop infinitely.
+ * @param overlayColor Color of the top and bottom gradient overlays.
+ */
 
 @Composable
 internal fun NumberWheel(
