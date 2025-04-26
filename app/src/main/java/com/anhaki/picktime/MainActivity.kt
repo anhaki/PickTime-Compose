@@ -29,6 +29,8 @@ class MainActivity : ComponentActivity() {
                 var hour by remember { mutableIntStateOf(0) }
                 var minute by remember { mutableIntStateOf(0) }
                 var second by remember { mutableIntStateOf(0) }
+
+                var month by remember { mutableIntStateOf(4) }
                 Column(
                     modifier = Modifier
                         .background(Color.White)
@@ -36,25 +38,32 @@ class MainActivity : ComponentActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.height(200.dp))
-                    PickHourMinuteSecond(
-                        initialHour = hour,
-                        onHourChange = { hour = it },
-                        initialMinute = minute,
-                        onMinuteChange = { minute = it },
-                        initialSecond = second,
-                        onSecondChange = { second = it },
-                    )
+//                    PickHourMinuteSecond(
+//                        initialHour = hour,
+//                        onHourChange = { hour = it },
+//                        initialMinute = minute,
+//                        onMinuteChange = { minute = it },
+//                        initialSecond = second,
+//                        onSecondChange = { second = it },
+//                    )
 //                    PickHourMinute(
 //                        initialHour = hour,
 //                        onHourChange = { hour = it },
 //                        initialMinute = minute,
 //                        onMinuteChange = { minute = it },
 //                    )
+                    PickDate(
+                        initialMonth = month,
+                        onMonthChange = {
+                            month = it
+                        }
+                    )
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    Text(text = "Hour = $hour")
-                    Text(text = "Minute = $minute")
-                    Text(text = "Second = $second")
+//                    Text(text = "Hour = $hour")
+//                    Text(text = "Minute = $minute")
+//                    Text(text = "Second = $second")
+                    Text(text = "Month = $month")
                 }
             }
         }

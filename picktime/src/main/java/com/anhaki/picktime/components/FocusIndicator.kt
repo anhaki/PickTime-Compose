@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.anhaki.picktime.utils.PickTimeFocusIndicator
 import com.anhaki.picktime.utils.PickTimeTextStyle
-import com.anhaki.picktime.utils.measureTextHeight
+import com.anhaki.picktime.utils.measureNumberTextHeight
 
 @Composable
 internal fun FocusIndicator(
@@ -26,7 +26,7 @@ internal fun FocusIndicator(
     if (focusIndicator.enabled) {
         val density = LocalDensity.current
 
-        val selectedTextLineHeightPx = measureTextHeight(selectedTextStyle)
+        val selectedTextLineHeightPx = measureNumberTextHeight(selectedTextStyle)
         val selectedTextLineHeightDp = with(density) { selectedTextLineHeightPx.toDp() }
 
         var modifier = if(focusIndicator.border.width > 0.dp) Modifier.border(focusIndicator.border, focusIndicator.shape) else Modifier

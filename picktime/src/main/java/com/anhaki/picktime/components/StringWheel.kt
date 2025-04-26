@@ -23,15 +23,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.anhaki.picktime.utils.PickTimeTextStyle
+import com.anhaki.picktime.utils.measureMonthTextWidth
 import com.anhaki.picktime.utils.measureNumberTextHeight
 import com.anhaki.picktime.utils.measureNumberTextWidth
 import kotlinx.coroutines.launch
 
 
 @Composable
-internal fun NumberWheel(
+internal fun StringWheel(
     modifier: Modifier = Modifier,
-    items: List<Int>,
+    items: List<String>,
     selectedItem: Int,
     onItemSelected: (Int) -> Unit,
     space: Dp,
@@ -51,7 +52,7 @@ internal fun NumberWheel(
                 )
             )
         } else {
-            rememberLazyListState(initialFirstVisibleItemIndex = selectedItem + 1)
+            rememberLazyListState(initialFirstVisibleItemIndex = selectedItem - 1)
         }
 
     val coroutineScope = rememberCoroutineScope()
@@ -60,7 +61,7 @@ internal fun NumberWheel(
     val selectedTextLineHeightPx = measureNumberTextHeight(selectedTextStyle)
     val unselectedTextLineHeightPx = measureNumberTextHeight(unselectedTextStyle)
 
-    val selectedTextLineWidthPx = measureNumberTextWidth(selectedTextStyle)
+    val selectedTextLineWidthPx = measureMonthTextWidth(selectedTextStyle)
 
     val selectedTextLineHeightDp = with(density) { selectedTextLineHeightPx.toDp() }
     val selectedTextLineWidthDp = with(density) { selectedTextLineWidthPx.toDp() }
@@ -123,9 +124,9 @@ internal fun NumberWheel(
 
     LaunchedEffect(firstVisibleOffset) {
         if (isLooping) {
-            onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow) % items.size])
+            onItemSelected((firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow) % items.size)
         } else {
-            onItemSelected(items[(firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0) % items.size])
+            onItemSelected((firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0) % items.size + 1)
         }
     }
 
@@ -171,7 +172,7 @@ internal fun NumberWheel(
                 val itemIndex = it % items.size
                 val item = items[itemIndex]
                 val countIndex = it % Int.MAX_VALUE
-                val isItemSelected = selectedItem == items[itemIndex] - 1
+                val isItemSelected = selectedItem == itemIndex + 1
                 val index = if (isLooping) countIndex - extraRow else itemIndex
 
                 Box(
@@ -179,7 +180,7 @@ internal fun NumberWheel(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = item.toString().padStart(2, '0'),
+                        text = item,
                         color = colorInterpolator(index),
                         fontSize = sizeInterpolator(index).sp,
                         fontWeight = if (isItemSelected) selectedTextStyle.fontWeight else unselectedTextStyle.fontWeight,

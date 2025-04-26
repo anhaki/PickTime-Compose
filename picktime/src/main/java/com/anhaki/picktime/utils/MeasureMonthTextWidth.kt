@@ -4,15 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.rememberTextMeasurer
 
 @Composable
-internal fun measureTextHeight(
+internal fun measureMonthTextWidth(
     textStyle: PickTimeTextStyle,
 ): Float {
     val textMeasurer = rememberTextMeasurer()
 
     val layoutResult = textMeasurer.measure(
-        text = " \n ",
+        text = "September ",
         style = textStyle.toTextStyle()
     )
-
-    return (layoutResult.size.height * 0.6).toFloat()
+    return layoutResult.size.width.toFloat()
 }
