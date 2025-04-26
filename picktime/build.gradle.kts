@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id ("maven-publish")
 }
 
 android {
@@ -33,6 +34,20 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+}
+
+publishing {
+    publications {
+        create("release", MavenPublication::class) {
+            groupId = "com.github.anhaki"
+            artifactId = "PickTime-Compose"
+            version = "1.0.0"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
     }
 }
 
