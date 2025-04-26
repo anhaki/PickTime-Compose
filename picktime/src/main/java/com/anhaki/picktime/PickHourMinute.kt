@@ -96,7 +96,7 @@ fun PickHourMinute(
         ) {
             NumberWheel(
                 items = (0..23).toList(),
-                selectedItem = hour - 1,
+                selectedItem = hour,
                 space = verticalSpace,
                 onItemSelected = { onHourChange(it) },
                 selectedTextStyle = adjustedSelectedTextStyle,
@@ -113,7 +113,7 @@ fun PickHourMinute(
             Spacer(modifier = Modifier.width(horizontalSpace))
             NumberWheel(
                 items = (0..59).toList(),
-                selectedItem = minute - 1,
+                selectedItem = minute,
                 onItemSelected = { onMinuteChange(it) },
                 space = verticalSpace,
                 selectedTextStyle = adjustedSelectedTextStyle,

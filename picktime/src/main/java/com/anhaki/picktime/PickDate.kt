@@ -50,7 +50,7 @@ fun PickDate(
     verticalSpace: Dp = 12.dp,
     horizontalSpace: Dp = 15.dp,
     containerColor: Color = Color(0xFFFFFFFF),
-    isLooping: Boolean = false,
+    isLooping: Boolean = true,
     extraRow: Int = 2,
     focusIndicator: PickTimeFocusIndicator = PickTimeFocusIndicator(
         enabled = true,

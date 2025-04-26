@@ -47,7 +47,7 @@ internal fun StringWheel(
             rememberLazyListState(
                 nearestIndexTarget(
                     Int.MAX_VALUE / 2,
-                    (selectedItem - extraRow) + 1,
+                    (selectedItem - extraRow) - 1,
                     items.size
                 )
             )
@@ -124,7 +124,7 @@ internal fun StringWheel(
 
     LaunchedEffect(firstVisibleOffset) {
         if (isLooping) {
-            onItemSelected((firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow) % items.size)
+            onItemSelected((firstIndex + if (firstVisibleOffset > maxOffset / 2) extraRow + 1 else extraRow) % items.size + 1)
         } else {
             onItemSelected((firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0) % items.size + 1)
         }

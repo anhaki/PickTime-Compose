@@ -51,7 +51,7 @@ internal fun NumberWheel(
                 )
             )
         } else {
-            rememberLazyListState(initialFirstVisibleItemIndex = selectedItem + 1)
+            rememberLazyListState(initialFirstVisibleItemIndex = selectedItem)
         }
 
     val coroutineScope = rememberCoroutineScope()
@@ -171,7 +171,7 @@ internal fun NumberWheel(
                 val itemIndex = it % items.size
                 val item = items[itemIndex]
                 val countIndex = it % Int.MAX_VALUE
-                val isItemSelected = selectedItem == items[itemIndex] - 1
+                val isItemSelected = selectedItem == items[itemIndex]
                 val index = if (isLooping) countIndex - extraRow else itemIndex
 
                 Box(
