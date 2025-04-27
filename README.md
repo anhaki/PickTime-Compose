@@ -60,7 +60,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_1.gif" > 
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_1.gif" width="350" height="350"> 
   </td>  
   </tr>
   <tr>
