@@ -19,12 +19,12 @@ import com.anhaki.picktime.utils.PickTimeFocusIndicator
 import com.anhaki.picktime.utils.PickTimeTextStyle
 
 /**
- * A composable function that creates a customizable layout consisting of date, month, and year wheel pickers,
+ * A composable function that creates a customizable layout consisting of day, month, and year wheel pickers,
  * complete with adjustable styling, looping behavior, and focus indicators.
  *
- * @param initialDate The initial value of the date wheel picker.
- * @param onDateChange The callback function invoked when the date value changes.
- * @param dateRange The valid range of dates, defaulting to 1..31.
+ * @param initialDay The initial value of the day wheel picker.
+ * @param onDayChange The callback function invoked when the day value changes.
+ * @param dayRange The valid range of days, defaulting to 1..31.
  * @param initialMonth The initial selected month value (1-based index).
  * @param onMonthChange The callback function invoked when the month value changes.
  * @param monthList The list of month names to be displayed, defaulting to `English month names`.
@@ -41,16 +41,16 @@ import com.anhaki.picktime.utils.PickTimeTextStyle
  * @param focusIndicator The focus indicator displayed at the center of the wheel pickers, using [PickTimeFocusIndicator] including `enabled`, `widthFull`, `background`, `shape`, and `border`.
  *
  * Note:
- * - The function internally clamps `initialDate` within the given `dateRange`.
+ * - The function internally clamps `initialDay` within the given `dayRange`.
  * - The `initialMonth` is clamped between 1 and the size of `monthList`.
  * - The `initialYear` is clamped within the given `yearRange`.
  */
 
 @Composable
 fun PickDate(
-    initialDate: Int,
-    dateRange: IntRange = (1..31),
-    onDateChange: (Int) -> Unit,
+    initialDay: Int,
+    dayRange: IntRange = (1..31),
+    onDayChange: (Int) -> Unit,
     initialMonth: Int,
     monthList: List<String> = listOf(
         "January", "February", "March", "April", "May", "June",
@@ -85,7 +85,7 @@ fun PickDate(
         border = BorderStroke(4.dp, Color(0xFFEE4720)),
     )
 ) {
-    val displayedDate = initialDate.coerceIn(dateRange.first(), dateRange.last())
+    val displayedDay = initialDay.coerceIn(dayRange.first(), dayRange.last())
     val displayedMonth = initialMonth.coerceIn(1, monthList.size)
     val displayedYear = initialYear.coerceIn(yearRange.first(), yearRange.last())
 
@@ -103,9 +103,9 @@ fun PickDate(
         focusIndicator = focusIndicator
     ) {
         NumberWheel(
-            items = dateRange.toList(),
-            selectedItem = displayedDate,
-            onItemSelected = onDateChange,
+            items = dayRange.toList(),
+            selectedItem = displayedDay,
+            onItemSelected = onDayChange,
             space = verticalSpace,
             selectedTextStyle = adjustedSelectedTextStyle,
             unselectedTextStyle = unselectedTextStyle,

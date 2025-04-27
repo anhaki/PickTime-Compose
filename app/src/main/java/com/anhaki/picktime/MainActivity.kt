@@ -18,9 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.anhaki.picktime.ui.theme.PickTimeTheme
-import com.anhaki.picktime.utils.PickTimeTextStyle
 import com.anhaki.picktime.utils.TimeFormat
 
 class MainActivity : ComponentActivity() {
@@ -33,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 var minute by remember { mutableIntStateOf(45) }
                 var second by remember { mutableIntStateOf(23) }
 
-                var date by remember { mutableIntStateOf(28) }
+                var day by remember { mutableIntStateOf(28) }
                 var month by remember { mutableIntStateOf(1) }
                 var year by remember { mutableIntStateOf(2025) }
                 Column(
@@ -60,12 +58,16 @@ class MainActivity : ComponentActivity() {
                         isLooping = true
                     )
                     PickDate(
-                        initialDate = date,
-                        onDateChange = { date = it },
+                        initialDay = day,
+                        onDayChange = { day = it },
                         initialMonth = month,
                         onMonthChange = { month = it },
                         initialYear = year,
                         onYearChange = { year = it },
+                        monthList = listOf(
+                            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+                        )
                     )
                     Spacer(modifier = Modifier.height(40.dp))
 
@@ -73,7 +75,7 @@ class MainActivity : ComponentActivity() {
                     Text(text = "Minute = $minute")
                     Text(text = "Second = $second")
                     Text(text = "")
-                    Text(text = "Date = $date")
+                    Text(text = "Day = $day")
                     Text(text = "Month = $month")
                     Text(text = "Year = $year")
                 }
