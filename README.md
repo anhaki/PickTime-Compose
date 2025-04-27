@@ -1,4 +1,4 @@
-⏰ PickTime - Jetpack Compose Time Wheel Picker
+## ⏰ PickTime - Jetpack Compose Time Wheel Picker
 
 PickTime is a highly customizable and smooth time wheel picker library for Jetpack Compose.  
 It updates the value **on every scroll** and provides a super **fluid** user experience! 🚀
