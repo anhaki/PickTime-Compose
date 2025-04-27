@@ -78,7 +78,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_2.gif" > 
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_2.gif" width="350" height="350"> 
   </td>
   </tr>
   <tr>
@@ -96,7 +96,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_3.gif" >           
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_3.gif" width="350" height="350">           
   </td>
   </tr>
   <tr>
@@ -114,7 +114,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_4.gif" >           
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_4.gif" width="350" height="350">           
   </td>
   </tr>
     <tr>
@@ -136,7 +136,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_5.gif" >          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_5.gif" width="350" height="350">          
   </td>
   </tr>
 </table>
@@ -215,7 +215,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_1.gif" >   
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_1.gif" width="350" height="350">   
   </td>
   </tr>
   <tr>
@@ -258,7 +258,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_2.gif" >    
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_2.gif" width="350" height="350">    
   </td>
   </tr>
   <tr>
@@ -302,7 +302,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_3.gif" >   
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_3.gif" width="350" height="350">   
   </td>
   </tr>
   <tr>
@@ -348,7 +348,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_4.gif" >   
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_4.gif" width="350" height="350">   
   </td>
   </tr>
   <tr>
@@ -394,7 +394,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_5.gif" >      
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_5.gif" width="350" height="350">      
   </td>
   </tr>
   <tr>
@@ -437,7 +437,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_6.gif" >   
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_6.gif" width="350" height="350">   
   </td>
   </tr>
   <tr>
@@ -489,7 +489,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_7.gif" >   
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_7.gif" width="350" height="350">   
   </td>
   </tr>
 
