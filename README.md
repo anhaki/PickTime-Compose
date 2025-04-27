@@ -125,8 +125,10 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
         initialYear = year,
         onYearChange = { year = it },
         monthList = listOf(
-            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            "Enero", "Febrero", "Marzo",
+            "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre",
+            "Octubre", "Noviembre", "Diciembre"
         )
   ```
   </td>
@@ -451,8 +453,10 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
         initialYear = year,
         onYearChange = { year = it },
         monthList = listOf(
-            "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-            "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+            "Janvier", "Février", "Mars",
+            "Avril", "Mai", "Juin",
+            "Juillet", "Août", "Septembre",
+            "Octobre", "Novembre", "Décembre"
         ),
         yearRange = (2021..2030),
         selectedTextStyle = PickTimeTextStyle(
