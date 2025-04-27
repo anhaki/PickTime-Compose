@@ -1,4 +1,4 @@
-# ⏰ PickTime - Jetpack Compose Time Wheel Picker
+⏰ PickTime - Jetpack Compose Time Wheel Picker
 
 PickTime is a highly customizable and smooth time wheel picker library for Jetpack Compose.  
 It updates the value **on every scroll** and provides a super **fluid** user experience! 🚀
@@ -56,8 +56,8 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
-  </td>
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_1.gif" > 
+  </td>  
   </tr>
   <tr>
   <td>
@@ -74,7 +74,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_2.gif" > 
   </td>
   </tr>
   <tr>
@@ -92,7 +92,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_3.gif" >           
   </td>
   </tr>
   <tr>
@@ -110,7 +110,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_4.gif" >           
   </td>
   </tr>
     <tr>
@@ -131,7 +131,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/usage_5.gif" >          
   </td>
   </tr>
 </table>
@@ -210,7 +210,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_1.gif" >   
   </td>
   </tr>
   <tr>
@@ -253,7 +253,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_2.gif" >    
   </td>
   </tr>
   <tr>
@@ -297,7 +297,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_3.gif" >   
   </td>
   </tr>
   <tr>
@@ -343,7 +343,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_4.gif" >   
   </td>
   </tr>
   <tr>
@@ -389,7 +389,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_5.gif" >      
   </td>
   </tr>
   <tr>
@@ -432,7 +432,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_6.gif" >   
   </td>
   </tr>
   <tr>
@@ -483,7 +483,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
   ```
   </td>
   <td>  
-          
+    <img src="https://raw.githubusercontent.com/anhaki/PickTime-Compose/refs/heads/main/assets/eou_7.gif" >   
   </td>
   </tr>
 
@@ -492,8 +492,6 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
 ---
 
 ## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
