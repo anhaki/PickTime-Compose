@@ -3,7 +3,11 @@
 PickTime is a highly customizable and smooth time wheel picker library for Jetpack Compose.  
 It updates the value **on every scroll** and provides a super **fluid** user experience! 🚀
 
-<a href="https://android-arsenal.com/api?level=21"><img alt="API" src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat"/></a>
+![API 21+](https://img.shields.io/badge/API-21%2B-brightgreen.svg)
+[![](https://jitpack.io/v/anhaki/PickTime-Compose.svg)](https://jitpack.io/#anhaki/PickTime-Compose)
+![Jetpack Compose](https://img.shields.io/badge/Built%20with-Jetpack%20Compose-4285F4.svg?logo=jetpackcompose&logoColor=white)
+![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)
+
 ---
 
 ## 📦 Installation
@@ -494,6 +498,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
 ---
 
 ## 📄 License
+This project is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 ---
 
