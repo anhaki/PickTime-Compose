@@ -35,6 +35,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
 ---
 
 ## 🚩 Usage
+Usage of the wheel pickers (Code and Preview)
 
 <table>
   <tr>
@@ -164,6 +165,7 @@ implementation("com.github.anhaki:PickTime-Compose:1.1.2")
 ---
 
 ## 🛠️ Example of use
+Example of use of the wheel pickers (Code and Preview)
 
 <table>
   <tr>
