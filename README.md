@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 **2.** Add the dependency to `build.gradle.kts`:
 
 ```kotlin
-implementation("com.github.anhaki:PickTime-Compose:1.1.2")
+implementation("com.github.anhaki:PickTime-Compose:1.1.3")
 ```
 
 ---
