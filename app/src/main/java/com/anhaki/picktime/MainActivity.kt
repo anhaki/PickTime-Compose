@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.anhaki.picktime.ui.theme.PickTimeTheme
+import com.anhaki.picktime.utils.PickDateOrder
 import com.anhaki.picktime.utils.TimeFormat
 
 class MainActivity : ComponentActivity() {
@@ -67,7 +68,8 @@ class MainActivity : ComponentActivity() {
                         monthList = listOf(
                             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-                        )
+                        ),
+                        dateOrder = PickDateOrder.DMY
                     )
                     Spacer(modifier = Modifier.height(40.dp))
 

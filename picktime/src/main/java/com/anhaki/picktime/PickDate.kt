@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.sp
 import com.anhaki.picktime.components.GenericPickTime
 import com.anhaki.picktime.components.NumberWheel
 import com.anhaki.picktime.components.StringWheel
+import com.anhaki.picktime.utils.PickDateField
+import com.anhaki.picktime.utils.PickDateOrder
 import com.anhaki.picktime.utils.PickTimeFocusIndicator
 import com.anhaki.picktime.utils.PickTimeTextStyle
 
@@ -25,10 +27,10 @@ import com.anhaki.picktime.utils.PickTimeTextStyle
  * @param initialDay The initial value of the day wheel picker.
  * @param onDayChange The callback function invoked when the day value changes.
  * @param dayRange The valid range of days, defaulting to 1..31.
- * @param initialMonth The initial selected month value (1-based index).
  * @param onMonthChange The callback function invoked when the month value changes.
+ * @param initialMonth The initial selected month value (1-based index).
  * @param monthList The list of month names to be displayed, defaulting to `English month names`.
- * @param initialYear The initial value of the year wheel picker.
+ * @param dateOrder The order of the date.
  * @param onYearChange The callback function invoked when the year value changes.
  * @param yearRange The valid range of years, defaulting to 1990..2060.
  * @param selectedTextStyle The style of the selected text, using [PickTimeTextStyle] including `color`, `fontSize`, `fontFamily`, and `fontWeight`.
@@ -56,6 +58,7 @@ fun PickDate(
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ),
+    dateOrder: PickDateOrder = PickDateOrder.DMY,
     onMonthChange: (Int) -> Unit,
     initialYear: Int,
     yearRange: IntRange = (1990..2060),
@@ -102,40 +105,45 @@ fun PickDate(
         containerColor = containerColor,
         focusIndicator = focusIndicator
     ) {
-        NumberWheel(
-            items = dayRange.toList(),
-            selectedItem = displayedDay,
-            onItemSelected = onDayChange,
-            space = verticalSpace,
-            selectedTextStyle = adjustedSelectedTextStyle,
-            unselectedTextStyle = unselectedTextStyle,
-            extraRow = row,
-            isLooping = isLooping,
-            overlayColor = containerColor,
-        )
-        Spacer(modifier = Modifier.width(horizontalSpace))
-        StringWheel(
-            items = monthList,
-            selectedItem = displayedMonth,
-            onItemSelected = onMonthChange,
-            space = verticalSpace,
-            selectedTextStyle = adjustedSelectedTextStyle,
-            unselectedTextStyle = unselectedTextStyle,
-            extraRow = row,
-            isLooping = isLooping,
-            overlayColor = containerColor
-        )
-        Spacer(modifier = Modifier.width(horizontalSpace))
-        NumberWheel(
-            items = yearRange.toList(),
-            selectedItem = displayedYear,
-            onItemSelected = onYearChange,
-            space = verticalSpace,
-            selectedTextStyle = adjustedSelectedTextStyle,
-            unselectedTextStyle = unselectedTextStyle,
-            extraRow = row,
-            isLooping = isLooping,
-            overlayColor = containerColor,
-        )
+        dateOrder.order.forEachIndexed { index, field ->
+            when (field) {
+                PickDateField.DAY -> NumberWheel(
+                    items = dayRange.toList(),
+                    selectedItem = displayedDay,
+                    onItemSelected = onDayChange,
+                    space = verticalSpace,
+                    selectedTextStyle = adjustedSelectedTextStyle,
+                    unselectedTextStyle = unselectedTextStyle,
+                    extraRow = row,
+                    isLooping = isLooping,
+                    overlayColor = containerColor,
+                )
+                PickDateField.MONTH -> StringWheel(
+                    items = monthList,
+                    selectedItem = displayedMonth,
+                    onItemSelected = onMonthChange,
+                    space = verticalSpace,
+                    selectedTextStyle = adjustedSelectedTextStyle,
+                    unselectedTextStyle = unselectedTextStyle,
+                    extraRow = row,
+                    isLooping = isLooping,
+                    overlayColor = containerColor
+                )
+                PickDateField.YEAR -> NumberWheel(
+                    items = yearRange.toList(),
+                    selectedItem = displayedYear,
+                    onItemSelected = onYearChange,
+                    space = verticalSpace,
+                    selectedTextStyle = adjustedSelectedTextStyle,
+                    unselectedTextStyle = unselectedTextStyle,
+                    extraRow = row,
+                    isLooping = isLooping,
+                    overlayColor = containerColor,
+                )
+            }
+            if (index < dateOrder.order.lastIndex) {
+                Spacer(modifier = Modifier.width(horizontalSpace))
+            }
+        }
     }
 }

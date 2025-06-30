@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.anhaki.picktime"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
@@ -42,7 +42,7 @@ publishing {
         create("release", MavenPublication::class) {
             groupId = "com.github.anhaki"
             artifactId = "picktime-compose"
-            version = "1.1.2"
+            version = "1.1.3"
 
             afterEvaluate {
                 from(components["release"])
