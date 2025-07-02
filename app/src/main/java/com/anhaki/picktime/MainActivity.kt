@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
                         onMinuteChange = { minute = it },
                         initialSecond = second,
                         onSecondChange = { second = it },
+                        containerColor = Color.Transparent
                     )
                     PickHourMinute(
                         initialHour = hour,
@@ -56,7 +57,8 @@ class MainActivity : ComponentActivity() {
                         initialMinute = minute,
                         onMinuteChange = { minute = it },
                         timeFormat = TimeFormat.HOUR_12,
-                        isLooping = true
+                        isLooping = true,
+                        containerColor = Color.Transparent
                     )
                     PickDate(
                         initialDay = day,
@@ -69,7 +71,8 @@ class MainActivity : ComponentActivity() {
                             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
                         ),
-                        dateOrder = PickDateOrder.DMY
+                        dateOrder = PickDateOrder.DMY,
+                        containerColor = Color.Transparent
                     )
                     Spacer(modifier = Modifier.height(40.dp))
 

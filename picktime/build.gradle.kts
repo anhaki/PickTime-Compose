@@ -42,7 +42,7 @@ publishing {
         create("release", MavenPublication::class) {
             groupId = "com.github.anhaki"
             artifactId = "picktime-compose"
-            version = "1.1.3"
+            version = "1.1.4"
 
             afterEvaluate {
                 from(components["release"])

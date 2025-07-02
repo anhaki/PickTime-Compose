@@ -19,7 +19,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -78,6 +85,8 @@ internal fun <T> Wheel(
     val coroutineScope = rememberCoroutineScope()
     val density = LocalDensity.current
 
+    val spacePX = with(density) { space.toPx() }
+
     val selectedTextLineHeightPx = measureTextHeight(selectedTextStyle)
     val selectedTextLineHeightDp = with(density) { selectedTextLineHeightPx.toDp() }
 
@@ -89,8 +98,10 @@ internal fun <T> Wheel(
 
     val wheelHeight =
         (unselectedTextLineHeightDp * (extraRow * 2)) + (space * (extraRow * 2 + 2)) + selectedTextLineHeightDp
+    val wheelHeightPx =
+        with(density) { wheelHeight.toPx() }
 
-    val maxOffset = with(density) { unselectedTextLineHeightPx + space.toPx() }
+    val maxOffset = with(density) { unselectedTextLineHeightPx + spacePX }
 
     val firstIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
     val firstVisibleOffset by remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }
@@ -162,7 +173,32 @@ internal fun <T> Wheel(
     Box(
         modifier = modifier
             .height(wheelHeight)
-            .width(selectedTextLineWidthDp),
+            .width(selectedTextLineWidthDp)
+            .graphicsLayer {
+                compositingStrategy = CompositingStrategy.Offscreen
+            }
+            .drawWithContent {
+                val topOverlayPosition = (maxOffset/size.height)
+                val bottomOverlayPosition = ((size.height - maxOffset)/size.height)
+                drawContent()
+                drawRect(
+                    brush = Brush.verticalGradient(
+                        0f to Color.Black,
+                        topOverlayPosition to Color.Transparent,
+                    ),
+                    topLeft = Offset(x = 0f, y = 0f),
+                    blendMode = BlendMode.DstOut
+                )
+                drawRect(
+                    brush = Brush.verticalGradient(
+                        bottomOverlayPosition to Color.Transparent,
+                        1f to Color.Black,
+                    ),
+                    topLeft = Offset(x = 0f, y = wheelHeightPx - (unselectedTextLineHeightPx + spacePX)),
+                    blendMode = BlendMode.DstOut
+                )
+            }
+        ,
         contentAlignment = Alignment.Center
     ) {
         LazyColumn(
@@ -211,14 +247,6 @@ internal fun <T> Wheel(
                 }
             }
         }
-
-        GradientOverlay(
-            modifier = Modifier
-                .height(wheelHeight)
-                .fillMaxWidth(),
-            color = overlayColor,
-            height = unselectedTextLineHeightDp + space
-        )
     }
 }
 
