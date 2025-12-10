@@ -32,7 +32,7 @@ import com.anhaki.picktime.utils.PickTimeTextStyle
  */
 
 @Composable
-fun GenericPickTime(
+internal fun GenericPickTime(
     selectedTextStyle: PickTimeTextStyle,
     verticalSpace: Dp,
     containerColor: Color,

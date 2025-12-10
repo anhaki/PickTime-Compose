@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -38,8 +40,9 @@ class MainActivity : ComponentActivity() {
                 Column(
                     modifier = Modifier
                         .background(Color.White)
+                        .verticalScroll(rememberScrollState())
                         .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(50.dp))
                     PickHourMinuteSecond(
@@ -74,8 +77,18 @@ class MainActivity : ComponentActivity() {
                         dateOrder = PickDateOrder.DMY,
                         containerColor = Color.Transparent
                     )
+                    PickDayMonth(
+                        initialDay = day,
+                        onDayChange = { day = it },
+                        initialMonth = month,
+                        onMonthChange = { month = it },
+                        monthList = listOf(
+                            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                        ),
+                        containerColor = Color.Transparent,
+                    )
                     Spacer(modifier = Modifier.height(40.dp))
-
                     Text(text = "Hour = $hour")
                     Text(text = "Minute = $minute")
                     Text(text = "Second = $second")
