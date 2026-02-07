@@ -46,6 +46,6 @@ internal fun NumberWheel(
         isLooping = isLooping,
         overlayColor = overlayColor,
         itemToString = { it.toString().padStart(2, '0') },
-        longestText = items.maxBy { it }.toString()
+        longestText = "00"
     )
 }
