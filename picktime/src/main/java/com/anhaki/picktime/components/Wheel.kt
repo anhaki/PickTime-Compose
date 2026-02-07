@@ -158,12 +158,14 @@ internal fun <T> Wheel(
         } else {
             (firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0) % items.size
         }
-        onItemSelected(selected)
-        localSelectedItem = selected
+        if (localSelectedItem != selected) {
+            localSelectedItem = selected
+            onItemSelected(selected)
+        }
     }
 
     LaunchedEffect(isScrolling) {
-        if (!isScrolling) {
+        if (!isScrolling && firstVisibleOffset != 0) {
             coroutineScope.launch {
                 listState.animateScrollToItem(firstIndex + if (firstVisibleOffset > maxOffset / 2) 1 else 0)
             }
