@@ -1,6 +1,7 @@
 package com.anhaki.picktime.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -34,18 +35,21 @@ internal fun NumberWheel(
     isLooping: Boolean,
     overlayColor: Color
 ) {
-    Wheel(
-        modifier = modifier,
-        items = items,
-        selectedItem = items.indexOf(selectedItem),
-        onItemSelected = { index -> onItemSelected(items[index]) },
-        space = space,
-        selectedTextStyle = selectedTextStyle,
-        unselectedTextStyle = unselectedTextStyle,
-        extraRow = extraRow,
-        isLooping = isLooping,
-        overlayColor = overlayColor,
-        itemToString = { it.toString().padStart(2, '0') },
-        longestText = items.maxBy { it }.toString()
-    )
+    key(items) {
+        Wheel(
+            modifier = modifier,
+            items = items,
+            selectedItem = items.indexOf(selectedItem),
+            onItemSelected = { index -> onItemSelected(items[index]) },
+            space = space,
+            selectedTextStyle = selectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = extraRow,
+            isLooping = isLooping,
+            overlayColor = overlayColor,
+            itemToString = { it.toString().padStart(2, '0') },
+            longestText = items.maxBy { it }.toString()
+        )
+    }
+
 }

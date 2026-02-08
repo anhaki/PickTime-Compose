@@ -1,6 +1,7 @@
 package com.anhaki.picktime.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -34,18 +35,20 @@ internal fun StringWheel(
     isLooping: Boolean,
     overlayColor: Color
 ) {
-    Wheel(
-        modifier = modifier,
-        items = items,
-        selectedItem = selectedItem - 1,
-        onItemSelected = { index -> onItemSelected(index + 1) },
-        space = space,
-        selectedTextStyle = selectedTextStyle,
-        unselectedTextStyle = unselectedTextStyle,
-        extraRow = extraRow,
-        isLooping = isLooping,
-        overlayColor = overlayColor,
-        itemToString = { it },
-        longestText = items.maxBy { it.length },
-    )
+    key(items) {
+        Wheel(
+            modifier = modifier,
+            items = items,
+            selectedItem = selectedItem - 1,
+            onItemSelected = { index -> onItemSelected(index + 1) },
+            space = space,
+            selectedTextStyle = selectedTextStyle,
+            unselectedTextStyle = unselectedTextStyle,
+            extraRow = extraRow,
+            isLooping = isLooping,
+            overlayColor = overlayColor,
+            itemToString = { it },
+            longestText = items.maxBy { it.length },
+        )
+    }
 }

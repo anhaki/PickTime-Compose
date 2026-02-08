@@ -1,9 +1,12 @@
 package com.anhaki.picktime
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -23,8 +27,10 @@ import androidx.compose.ui.unit.dp
 import com.anhaki.picktime.ui.theme.PickTimeTheme
 import com.anhaki.picktime.utils.PickDateOrder
 import com.anhaki.picktime.utils.TimeFormat
+import java.time.YearMonth
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,6 +43,14 @@ class MainActivity : ComponentActivity() {
                 var day by remember { mutableIntStateOf(28) }
                 var month by remember { mutableIntStateOf(1) }
                 var year by remember { mutableIntStateOf(2025) }
+                val maxDayInMonth = YearMonth.of(year, month).lengthOfMonth()
+
+                LaunchedEffect(month, year) {
+                    if (day > maxDayInMonth) {
+                        day = maxDayInMonth
+                    }
+                }
+
                 Column(
                     modifier = Modifier
                         .background(Color.White)
@@ -58,25 +72,23 @@ class MainActivity : ComponentActivity() {
                         initialHour = hour,
                         onHourChange = { hour = it },
                         initialMinute = minute,
-                        onMinuteChange = { minute = it },
+                        onMinuteChange = { minute = it
+                            Log.println(Log.INFO, "PickHourMinute", "minute = $minute")
+                        },
                         timeFormat = TimeFormat.HOUR_12,
-                        isLooping = true,
                         containerColor = Color.Transparent
                     )
                     PickDate(
                         initialDay = day,
+                        dayRange = IntRange(1, maxDayInMonth),
                         onDayChange = { day = it },
                         initialMonth = month,
                         onMonthChange = { month = it },
                         initialYear = year,
                         onYearChange = { year = it },
-                        monthList = listOf(
-                            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-                        ),
-                        dateOrder = PickDateOrder.DMY,
-                        containerColor = Color.Transparent
+                        extraRow = 1,
                     )
+
                     PickDayMonth(
                         initialDay = day,
                         onDayChange = { day = it },
