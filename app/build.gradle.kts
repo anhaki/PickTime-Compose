@@ -57,5 +57,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(project(":picktime"))
+    //noinspection UseTomlInstead
+    implementation("com.github.anhtuanmai:PickTime-Compose:1.1.5.1")
+//    implementation(project(":picktime"))
 }

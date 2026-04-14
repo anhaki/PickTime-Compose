@@ -40,9 +40,9 @@ android {
 publishing {
     publications {
         create("release", MavenPublication::class) {
-            groupId = "com.github.anhaki"
+            groupId = "com.github.anhtuanmai"
             artifactId = "picktime-compose"
-            version = "1.1.5"
+            version = "1.1.5.1"
 
             afterEvaluate {
                 from(components["release"])
